@@ -292,6 +292,7 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
 .sources li b{color:var(--on-dark);font-weight:700}
 .url-box{margin-top:30px;padding:16px 20px;border:2px dashed var(--mint);font:500 1rem var(--ui)}
 .foot{margin-top:40px;font:500 .8rem var(--ui);color:var(--on-dark-soft);display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
+.pdf-action{margin-top:32px;text-align:center}
 
 /* ---------- responsive ---------- */
 @media (max-width:980px){
@@ -326,7 +327,7 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
 @media print{
   *{animation:none!important;transition:none!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   html{scroll-behavior:auto}
-  body::before,.topbar,.progress,.hero canvas,.ticker,.sim .btn,.seg,.presets,#c-merge,.myth-q button,.hero .cta-row{display:none!important}
+  body::before,.topbar,.progress,.hero canvas,.ticker,.sim .btn,.seg,.presets,#c-merge,.myth-q button,.hero .cta-row,.pdf-action{display:none!important}
   .reveal{opacity:1!important;transform:none!important}
   .ans{grid-template-rows:1fr!important}
   .print-only{display:block}
@@ -733,6 +734,7 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
     <div class="url-box print-only">Parte interactiva de esta edición (calculadora, simulador y gráfico con escala): <a id="live-url" href="https://santiagoestteban.github.io/PeriodicoEcologico/">https://santiagoestteban.github.io/PeriodicoEcologico/</a></div>
 
     <div class="foot"><span>Consenso Verde · Edición N.º 01</span><a href="#portada">Volver arriba ↑</a></div>
+    <div class="pdf-action"><button type="button" class="btn" id="download-pdf">Descargar página en PDF</button></div>
   </div>
 </section>
 
@@ -743,6 +745,7 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
   var $ = function(id){ return document.getElementById(id); };
   var nf = function(v,d){ return v.toLocaleString('es-CO',{minimumFractionDigits:d,maximumFractionDigits:d}); };
   var fmt = function(v){ return v.toLocaleString('es-CO',{maximumSignificantDigits:4}); };
+  $('download-pdf').addEventListener('click', function(){ window.print(); });
 
   /* ---- barra de progreso ---- */
   var prog = $('progress');
