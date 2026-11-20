@@ -1,0 +1,904 @@
+<title>Consenso Verde</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bitter:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;700&display=swap">
+<style>
+/* Concepto: periodico-red. Una portada que parece una red de bloques viva (menta = baja energia, coral = calor de la
+   Prueba de Trabajo), bandas alternas oscuras y claras, titulares condensados y texto largo en serif.
+   Se mantiene un solo look (verde profundo + papel menta) con todos los colores explicitos. */
+:root{
+  --deep:#031f21; --teal:#05373a; --teal-2:#0a4c4f;
+  --mint:#2de2c0; --sun:#ffd23f; --coral:#ff5a47;
+  --paper:#eef6f2; --card:#ffffff; --ink:#0b2224; --ink-soft:#3f5b5d; --line:#cfe3dc;
+  --mint-ink:#0a7a67; --coral-ink:#c13a2a;
+  --on-dark:#e8f8f3; --on-dark-soft:#a5cdc5; --line-dark:rgba(232,248,243,.18);
+  --display:'Anton','Archivo Black',Impact,'Arial Narrow',sans-serif;
+  --serif:'Bitter',Georgia,'Times New Roman',serif;
+  --ui:'DM Sans',Inter,system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--deep);color:var(--on-dark);font-family:var(--ui);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--deep)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section{scroll-margin-top:60px}
+.band{padding-block:clamp(56px,8vw,104px)}
+.light{background:var(--paper);color:var(--ink)}
+.teal{background:var(--teal);color:var(--on-dark)}
+.deep{background:var(--deep);color:var(--on-dark)}
+.print-only{display:none}
+
+/* ---------- tipografia comun ---------- */
+.eyebrow{font:700 .78rem/1 var(--ui);letter-spacing:.18em;text-transform:uppercase;margin:0 0 16px;display:inline-flex;gap:10px;align-items:center}
+.eyebrow::before{content:"";width:10px;height:10px;background:currentColor;display:inline-block}
+.light .eyebrow{color:var(--mint-ink)}
+.teal .eyebrow,.deep .eyebrow{color:var(--mint)}
+h2{font:400 clamp(2.2rem,5.2vw,4rem)/1.02 var(--display);text-transform:uppercase;letter-spacing:.01em;margin:0 0 14px;text-wrap:balance;max-width:22ch}
+h3{font:700 1.15rem/1.25 var(--ui);margin:0 0 10px}
+.byline{font:500 .9rem var(--ui);margin:0 0 40px;opacity:.8}
+.lead{font:400 1.12rem/1.6 var(--serif);max-width:62ch;margin:0 0 36px}
+.src{font:500 .8rem/1.45 var(--ui);opacity:.75}
+
+/* ---------- reveal ---------- */
+.reveal{opacity:.55;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- barra superior ---------- */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:35;background:rgba(3,31,33,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line-dark)}
+.topbar .wrap{display:flex;align-items:center;gap:20px;height:52px}
+.brand{font:400 1.25rem var(--display);letter-spacing:.06em;text-transform:uppercase;text-decoration:none;white-space:nowrap;display:flex;align-items:center;gap:8px;color:var(--on-dark)}
+.brand i{width:12px;height:12px;background:var(--mint);display:inline-block;box-shadow:6px 6px 0 var(--coral)}
+.brand i{margin-right:6px}
+.topbar nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin-left:auto}
+.topbar nav::-webkit-scrollbar{display:none}
+.topbar nav a{font:500 .85rem var(--ui);text-decoration:none;padding:8px 11px;border-radius:99px;white-space:nowrap;color:var(--on-dark-soft);transition:background .2s,color .2s}
+.topbar nav a:hover{background:rgba(45,226,192,.15);color:var(--on-dark)}
+.progress{position:absolute;left:0;bottom:-1px;height:3px;width:100%;transform-origin:left;transform:scaleX(0);background:linear-gradient(90deg,var(--mint),var(--sun),var(--coral))}
+
+/* ---------- portada ---------- */
+.hero{position:relative;overflow:hidden;padding-block:clamp(36px,5vw,64px) clamp(44px,6vw,80px);
+  background:radial-gradient(900px 520px at 88% 8%,rgba(45,226,192,.22),transparent 60%),radial-gradient(720px 520px at 4% 96%,rgba(255,90,71,.22),transparent 60%),var(--deep)}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hero-in{position:relative}
+.mast-top{display:flex;flex-wrap:wrap;gap:8px 28px;justify-content:space-between;font:700 .75rem var(--ui);letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-soft);border-bottom:2px solid var(--on-dark);padding-bottom:12px;margin-bottom:clamp(28px,4vw,52px)}
+.mast-top b{color:var(--sun)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(28px,5vw,64px);align-items:end}
+.mast{font:400 clamp(3.4rem,11vw,9.2rem)/.86 var(--display);text-transform:uppercase;margin:0;letter-spacing:.005em}
+.mast span{display:block;animation:rise .95s cubic-bezier(.2,.7,.2,1) both}
+.mast .w2{animation-delay:.15s;background:linear-gradient(100deg,var(--mint) 20%,var(--sun) 50%,var(--mint) 80%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--mint);animation:rise .95s .15s cubic-bezier(.2,.7,.2,1) both,shine 6s 1.2s ease-in-out infinite}
+@keyframes rise{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+@keyframes shine{0%,100%{background-position:0 0}50%{background-position:100% 0}}
+.lema{font:italic 400 clamp(1.15rem,2.2vw,1.55rem)/1.35 var(--serif);margin:22px 0 10px;max-width:30ch;animation:rise .9s .35s cubic-bezier(.2,.7,.2,1) both}
+.tema{font:500 .9rem var(--ui);color:var(--on-dark-soft);max-width:46ch;margin:0 0 26px;animation:rise .9s .45s both}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;animation:rise .9s .55s both}
+.btn{font:700 .9rem var(--ui);text-decoration:none;padding:13px 20px;border-radius:99px;border:2px solid var(--mint);color:var(--deep);background:var(--mint);transition:transform .2s,box-shadow .2s;cursor:pointer;display:inline-block}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 0 rgba(45,226,192,.25)}
+.btn.ghost{background:transparent;color:var(--on-dark)}
+.fig-card{border:2px solid var(--sun);padding:clamp(20px,3vw,32px);position:relative;background:rgba(3,31,33,.72);animation:rise .9s .5s both}
+.fig-card::before{content:"";position:absolute;inset:8px -8px -8px 8px;border:2px solid var(--coral);z-index:-1}
+.fig-label{font:700 .75rem var(--ui);letter-spacing:.16em;text-transform:uppercase;color:var(--sun);margin:0 0 6px}
+.fig{font:400 clamp(3.2rem,7.2vw,6rem)/1 var(--display);margin:0;color:var(--sun);white-space:nowrap}
+.fig small{font:400 .38em var(--display);margin-left:.15em;color:var(--on-dark)}
+.fig-cap{font:400 1.02rem/1.5 var(--serif);margin:14px 0 12px}
+.fig-src{font:500 .78rem/1.45 var(--ui);color:var(--on-dark-soft);margin:0}
+
+/* ---------- ticker ---------- */
+.ticker{background:var(--sun);color:var(--ink);overflow:hidden;white-space:nowrap;border-block:3px solid var(--ink)}
+.ticker-track{display:inline-flex;animation:tick 55s linear infinite;padding-block:12px}
+.ticker span{font:700 .9rem var(--ui);letter-spacing:.06em;text-transform:uppercase;padding-right:2rem;display:inline-flex;align-items:center;gap:2rem}
+.ticker span::after{content:"";width:9px;height:9px;background:var(--ink)}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* ---------- reportaje ---------- */
+.report-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:clamp(28px,5vw,64px);align-items:start;margin-bottom:56px}
+.report-text p{font:400 1.08rem/1.72 var(--serif);margin:0 0 1.15em;max-width:64ch}
+.report-text p.first::first-letter{font:400 4.6rem/.78 var(--display);float:left;padding:6px 12px 0 0;color:var(--mint-ink)}
+.pull{margin:60px 0 34px;padding:0;font:italic 600 clamp(1.5rem,2.8vw,2.1rem)/1.28 var(--serif);color:var(--ink);max-width:30ch;position:relative}
+.pull::before{content:"\201C";position:absolute;left:-.1em;top:-.62em;font:400 5rem/1 var(--display);color:var(--coral-ink)}
+.pull footer{font:700 .72rem var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-top:12px;font-style:normal}
+.facts{display:grid;gap:16px;position:sticky;top:76px}
+.facts>h3{font:700 .75rem var(--ui);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin:0}
+.fact{background:var(--teal);color:var(--on-dark);padding:20px 22px;transition:transform .25s}
+.fact:hover{transform:translateY(-4px) rotate(-.4deg)}
+.fact .n{font:400 clamp(2.4rem,4vw,3.3rem)/1 var(--display);color:var(--mint);margin:0}
+.fact:nth-of-type(2) .n{color:var(--sun)}
+.fact:nth-of-type(3) .n{color:var(--coral)}
+.fact .n small{font-size:.45em;margin-left:.2em;color:var(--on-dark)}
+.fact p{margin:8px 0 8px;font:500 .95rem/1.4 var(--ui)}
+.fact .src{color:var(--on-dark-soft);margin:0}
+
+.panel{background:var(--card);border:2px solid var(--ink);padding:clamp(20px,3vw,34px);margin-top:28px}
+.panel h3{font:400 clamp(1.6rem,3vw,2.2rem)/1.1 var(--display);text-transform:uppercase;margin:0 0 6px}
+.panel .sub{font:400 .95rem/1.5 var(--ui);color:var(--ink-soft);margin:0 0 22px;max-width:70ch}
+.panel-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px;align-items:flex-start}
+.seg{display:inline-flex;border:2px solid var(--ink);border-radius:99px;overflow:hidden}
+.seg button{font:700 .8rem var(--ui);padding:9px 16px;border:0;background:var(--card);color:var(--ink);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.bars{display:grid;gap:16px}
+.bar-row{display:grid;grid-template-columns:200px minmax(0,1fr) 130px;gap:14px;align-items:center}
+.bar-name{font:700 .95rem/1.2 var(--ui)}
+.bar-name small{display:block;font:500 .75rem var(--ui);color:var(--ink-soft);margin-top:2px}
+.track{position:relative;height:34px;background:repeating-linear-gradient(90deg,#e3efe9 0 1px,transparent 1px 10%);border-left:2px solid var(--ink)}
+.fill{position:absolute;left:0;top:4px;bottom:4px;min-width:4px;transform-origin:left;transition:width .6s cubic-bezier(.2,.7,.2,1)}
+.fill.pow{background:linear-gradient(90deg,var(--coral),#ff8a3d)}
+.fill.pos{background:var(--mint-ink)}
+.fill.replay{animation:grow 1.3s cubic-bezier(.2,.7,.2,1) both}
+@keyframes grow{from{transform:scaleX(0)}to{transform:none}}
+.mark{position:absolute;top:0;bottom:0;width:3px;background:var(--ink);transition:left .6s}
+.bar-val{font:700 .95rem var(--ui);font-variant-numeric:tabular-nums;text-align:right}
+.axis{position:relative;height:22px;margin:6px 130px 0 214px;border-top:2px solid var(--ink)}
+.axis span{position:absolute;top:4px;transform:translateX(-50%);font:500 .72rem var(--ui);color:var(--ink-soft);white-space:nowrap}
+.note{font:500 .85rem/1.5 var(--ui);color:var(--ink-soft);margin:16px 0 0}
+.note b{color:var(--ink)}
+
+.sim-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.sim{border:2px solid var(--ink);padding:18px;background:var(--paper)}
+.sim h4{font:700 1rem var(--ui);margin:0 0 2px}
+.sim p.d{font:500 .85rem/1.4 var(--ui);color:var(--ink-soft);margin:0 0 14px}
+.cells{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-bottom:14px}
+.cell{aspect-ratio:1;background:#d5e6df;position:relative;transition:background .3s,transform .3s,box-shadow .3s}
+.cell::after{content:"";position:absolute;inset:34%;background:#a9c7bd;transition:background .3s}
+.pow .cell.work{background:var(--coral);animation:pulse .5s ease-in-out infinite alternate}
+.pow .cell.work::after{background:#ffd6cf}
+.cell.win{background:var(--sun);box-shadow:0 0 0 3px var(--ink);transform:scale(1.08)}
+.cell.win::after{background:var(--ink)}
+.pos .cell.pick{background:var(--mint-ink);box-shadow:0 0 0 3px var(--ink);transform:scale(1.08)}
+.pos .cell.pick::after{background:var(--mint)}
+@keyframes pulse{to{transform:scale(.88)}}
+.sim-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px}
+.meter{font:700 .85rem var(--ui)}
+.meter b{font:400 2rem/1 var(--display);margin-right:6px}
+.pow .meter b{color:var(--coral-ink)} .pos .meter b{color:var(--mint-ink)}
+.sim .btn{background:var(--ink);color:var(--paper);border-color:var(--ink);padding:10px 16px;font-size:.82rem}
+
+/* ---------- IA y mi carrera ---------- */
+.ia-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.ia-card{border:1px solid var(--line-dark);padding:26px;background:linear-gradient(180deg,rgba(45,226,192,.08),transparent 70%);transition:transform .25s,border-color .25s}
+.ia-card:hover{transform:translateY(-5px);border-color:var(--mint)}
+.chip{display:inline-block;font:700 .7rem var(--ui);letter-spacing:.14em;text-transform:uppercase;padding:5px 10px;margin-bottom:16px;background:var(--mint);color:var(--deep)}
+.ia-card:nth-child(2) .chip{background:var(--sun)}
+.ia-card:nth-child(3) .chip{background:var(--coral)}
+.ia-card p{font:400 1rem/1.65 var(--serif);margin:0;color:var(--on-dark)}
+
+/* ---------- voces ---------- */
+.voices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px}
+.voice{background:var(--card);border:2px solid var(--ink);padding:24px}
+.voice header{display:flex;gap:14px;align-items:center;margin-bottom:18px}
+.avatar{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font:400 1.4rem var(--display);background:var(--teal);color:var(--mint);flex:none}
+.voice:nth-child(2) .avatar{background:var(--coral);color:var(--ink)}
+.voice h3{margin:0}
+.voice header p{margin:0;font:500 .85rem var(--ui);color:var(--ink-soft)}
+.tag{display:inline-block;font:700 .66rem var(--ui);letter-spacing:.12em;text-transform:uppercase;border:1.5px dashed var(--ink-soft);padding:2px 7px;margin-top:5px;color:var(--ink-soft)}
+.qa{margin:0 0 14px}
+.qa .q{font:700 .92rem/1.4 var(--ui);color:var(--mint-ink);margin:0 0 5px}
+.voice:nth-child(2) .qa .q{color:var(--coral-ink)}
+.qa .a{font:400 .98rem/1.6 var(--serif);margin:0;color:var(--ink)}
+
+/* ---------- debate ---------- */
+.debate{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;position:relative}
+.col{padding:clamp(24px,3.4vw,42px);border:1px solid var(--line-dark)}
+.col.a{background:linear-gradient(180deg,rgba(255,90,71,.20),rgba(255,90,71,.04))}
+.col.b{background:linear-gradient(180deg,rgba(45,226,192,.20),rgba(45,226,192,.04))}
+.col h3{font:400 clamp(1.6rem,3vw,2.3rem)/1.05 var(--display);text-transform:uppercase;margin:0 0 6px}
+.col.a h3{color:#ff9a8c} .col.b h3{color:var(--mint)}
+.col .post{font:700 .72rem var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--on-dark-soft);margin:0 0 18px}
+.col p.txt{font:400 1.04rem/1.7 var(--serif);margin:0 0 20px}
+.col .sign{font:700 .9rem var(--ui);margin:0}
+.col .sign span{font-weight:500;color:var(--on-dark-soft)}
+.vs{position:absolute;left:50%;top:50%;translate:-50% -50%;width:74px;height:74px;display:grid;place-items:center;background:var(--sun);color:var(--ink);font:400 1.8rem var(--display);border:3px solid var(--deep);transform:rotate(45deg);z-index:2}
+.vs span{transform:rotate(-45deg)}
+
+/* ---------- changelog ---------- */
+.tbl-wrap{overflow-x:auto;border:2px solid var(--ink);background:var(--card)}
+table.log{border-collapse:collapse;width:100%;min-width:700px}
+table.log th{font:700 .72rem var(--ui);letter-spacing:.14em;text-transform:uppercase;text-align:left;background:var(--ink);color:var(--paper);padding:12px 16px}
+table.log td{padding:16px;border-top:1px solid var(--line);vertical-align:top;font:400 .98rem/1.5 var(--ui);color:var(--ink)}
+table.log td.d{font:400 1.5rem/1 var(--display);white-space:nowrap;color:var(--teal)}
+table.log td.s{font:500 .85rem/1.4 var(--ui);color:var(--ink-soft)}
+table.log tr{transition:background .2s}
+table.log tbody tr:hover{background:#f1f9f5}
+.ty{display:inline-block;font:700 .68rem var(--ui);letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;white-space:nowrap}
+.ty.e{background:#c9f5ea;color:#06584a}
+.ty.t{background:#ffe9a8;color:#5a4300}
+.ty.r{background:#dbe7ff;color:#1b3a7a}
+.ty.a{background:#ffd5cf;color:#7a1d12}
+
+/* ---------- mitos ---------- */
+.myth{border-top:1px solid var(--line-dark)}
+.myth:last-child{border-bottom:1px solid var(--line-dark)}
+.myth-q{display:flex;gap:18px;align-items:center;justify-content:space-between;padding:22px 0}
+.myth-q p{font:400 clamp(1.3rem,2.4vw,1.8rem)/1.2 var(--display);text-transform:uppercase;margin:0;letter-spacing:.01em}
+.myth-q p small{display:block;font:700 .7rem var(--ui);letter-spacing:.16em;color:var(--coral);margin-bottom:6px}
+.myth-q button{font:700 .82rem var(--ui);padding:10px 16px;border-radius:99px;border:2px solid var(--mint);background:transparent;color:var(--mint);cursor:pointer;white-space:nowrap;transition:background .2s,color .2s}
+.myth-q button:hover,.myth.open .myth-q button{background:var(--mint);color:var(--deep)}
+.ans{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.2,.7,.2,1)}
+.myth.open .ans{grid-template-rows:1fr}
+.ans>div{overflow:hidden}
+.ans-in{padding:0 0 26px;max-width:72ch}
+.verdict{display:inline-block;font:700 .72rem var(--ui);letter-spacing:.14em;text-transform:uppercase;padding:5px 10px;margin-bottom:10px}
+.v-f{background:var(--coral);color:var(--deep)} .v-m{background:var(--sun);color:var(--deep)}
+.ans-in p{font:400 1.02rem/1.65 var(--serif);margin:0 0 8px}
+.ans-in .src{color:var(--on-dark-soft)}
+
+/* ---------- historia ---------- */
+.story{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(28px,5vw,64px);align-items:center}
+.story p.t{font:400 1.08rem/1.72 var(--serif);margin:0 0 1em;max-width:60ch}
+.ba{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:stretch}
+.ba .box{padding:22px;border:2px solid var(--on-dark)}
+.ba .box.pw{background:rgba(255,90,71,.16);border-color:var(--coral)}
+.ba .box.ps{background:rgba(45,226,192,.16);border-color:var(--mint)}
+.ba .lbl{font:700 .7rem var(--ui);letter-spacing:.14em;text-transform:uppercase;margin:0 0 8px}
+.ba .big{font:400 clamp(1.8rem,3.2vw,2.6rem)/1 var(--display);margin:0;white-space:nowrap}
+.ba .pw .big{color:#ff9a8c} .ba .ps .big{color:var(--mint)}
+.ba .big small{display:block;font-size:.42em;color:var(--on-dark);margin:6px 0 0}
+.ba .arrow{align-self:center;font:400 2.4rem var(--display);color:var(--sun);animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{50%{transform:translateX(8px)}}
+.drop{margin-top:18px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.drop .big2{font:400 clamp(3.6rem,9vw,7rem)/.9 var(--display);color:var(--sun)}
+.drop span.l{font:500 1rem var(--ui);max-width:24ch}
+
+/* ---------- proyecto ---------- */
+.proj-table{width:100%;border-collapse:collapse;background:var(--card);border:2px solid var(--ink);margin-bottom:34px}
+.proj-table th{width:190px;text-align:left;vertical-align:top;font:700 .72rem var(--ui);letter-spacing:.14em;text-transform:uppercase;background:var(--ink);color:var(--paper);padding:16px 18px}
+.proj-table td{padding:16px 20px;border-top:1px solid var(--line);font:400 .98rem/1.6 var(--ui);color:var(--ink)}
+.proj-table tr:first-child td{border-top:0}
+.proj-table tr+tr th{border-top:1px solid #234;}
+.calc{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);border:2px solid var(--ink);background:var(--card)}
+.calc-in{padding:clamp(20px,3vw,32px);border-right:2px solid var(--ink)}
+.calc-out{padding:clamp(20px,3vw,32px);background:var(--teal);color:var(--on-dark)}
+.calc h3{font:400 clamp(1.5rem,2.6vw,2rem)/1.1 var(--display);text-transform:uppercase;margin:0 0 6px}
+.calc .formula{font:700 .95rem var(--ui);background:#e3efe9;padding:8px 12px;display:inline-block;margin:0 0 16px;color:var(--ink)}
+.presets{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.presets button,.mini{font:700 .78rem var(--ui);padding:8px 13px;border-radius:99px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+.presets button:hover,.mini:hover{background:var(--sun)}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+label{font:700 .78rem/1.3 var(--ui);display:grid;gap:5px;color:var(--ink)}
+input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid var(--ink);background:#fff;color:var(--ink);width:100%;min-width:0;border-radius:0}
+.opts{width:100%;border-collapse:collapse;margin-bottom:14px}
+.opts th{font:700 .68rem var(--ui);letter-spacing:.1em;text-transform:uppercase;text-align:left;padding:0 8px 6px 0;color:var(--ink-soft)}
+.opts td{padding:5px 8px 5px 0;vertical-align:middle;font:700 .85rem/1.25 var(--ui);color:var(--ink)}
+.opts td:first-child{width:36%}
+.calc-note{font:500 .78rem/1.5 var(--ui);color:var(--ink-soft);margin:14px 0 0}
+.res{padding:16px 0;border-top:1px solid var(--line-dark)}
+.res:first-of-type{border-top:0;padding-top:0}
+.res-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 12px;align-items:baseline;margin-bottom:8px}
+.res-top b{font:700 .95rem var(--ui)}
+.res-top .v{font:400 1.9rem/1 var(--display);font-variant-numeric:tabular-nums}
+.res-top .v small{font:500 .72rem var(--ui);margin-left:5px;color:var(--on-dark-soft)}
+.res .tr{height:14px;background:rgba(232,248,243,.12)}
+.res .fl{height:100%;transition:width .5s cubic-bezier(.2,.7,.2,1)}
+.res.pow .fl{background:var(--coral)} .res.pos .fl{background:var(--mint)} .res.db .fl{background:var(--sun)}
+.res .meta{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:8px;font:500 .8rem var(--ui);color:var(--on-dark-soft);align-items:center}
+.pill{font:700 .68rem var(--ui);letter-spacing:.1em;text-transform:uppercase;padding:4px 9px}
+.pill.ok{background:var(--mint);color:var(--deep)} .pill.no{background:var(--coral);color:var(--deep)} .pill.base{background:var(--on-dark);color:var(--deep)}
+.reading{margin:16px 0 0;font:400 .98rem/1.6 var(--serif);border-top:2px solid var(--sun);padding-top:14px}
+
+/* ---------- cierre ---------- */
+.close-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;margin-bottom:46px}
+.close-grid h3{font:700 .75rem var(--ui);letter-spacing:.16em;text-transform:uppercase;color:var(--mint);margin:0 0 14px}
+.close-grid ul{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+.close-grid li{font:400 1rem/1.55 var(--serif);padding-left:20px;position:relative}
+.close-grid li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;background:var(--sun)}
+.close-grid p{font:400 1rem/1.6 var(--serif);margin:0 0 10px}
+.ia-decl{border:2px solid var(--sun);padding:22px}
+.ia-decl h3{color:var(--sun)}
+.sources{border-top:1px solid var(--line-dark);padding-top:28px}
+.sources h3{font:400 2rem var(--display);text-transform:uppercase;margin:0 0 14px}
+.sources ol{margin:0;padding-left:22px;columns:2;column-gap:40px;font:400 .92rem/1.55 var(--ui);color:var(--on-dark-soft)}
+.sources li{break-inside:avoid;margin-bottom:8px}
+.sources li b{color:var(--on-dark);font-weight:700}
+.url-box{margin-top:30px;padding:16px 20px;border:2px dashed var(--mint);font:500 1rem var(--ui)}
+.foot{margin-top:40px;font:500 .8rem var(--ui);color:var(--on-dark-soft);display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
+
+/* ---------- responsive ---------- */
+@media (max-width:980px){
+  .hero-grid,.report-grid,.story,.calc{grid-template-columns:minmax(0,1fr)}
+  .facts{position:static;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+  .facts>h3{grid-column:1/-1}
+  .calc-in{border-right:0;border-bottom:2px solid var(--ink)}
+  .ia-grid,.close-grid{grid-template-columns:minmax(0,1fr)}
+  .voices,.sim-grid,.debate{grid-template-columns:minmax(0,1fr)}
+  .vs{position:relative;left:auto;top:auto;translate:none;margin:-37px auto;}
+  .sources ol{columns:1}
+}
+@media (max-width:640px){
+  .bar-row{grid-template-columns:minmax(0,1fr)}
+  .bar-val{text-align:left}
+  .axis{margin:6px 0 0}
+  .ba{grid-template-columns:minmax(0,1fr)}
+  .ba .arrow{transform:rotate(90deg);justify-self:center;animation:none}
+  .fields{grid-template-columns:minmax(0,1fr)}
+  .proj-table th,.proj-table td{display:block;width:100%}
+  .myth-q{flex-direction:column;align-items:flex-start}
+  .topbar .brand{font-size:1.05rem}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .reveal{opacity:1;transform:none}
+  .ticker-track{animation:none}
+  html{scroll-behavior:auto}
+}
+
+/* ---------- version PDF (impresion) ---------- */
+@media print{
+  *{animation:none!important;transition:none!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  html{scroll-behavior:auto}
+  body::before,.topbar,.progress,.hero canvas,.ticker,.sim .btn,.seg,.presets,#c-merge,.myth-q button,.hero .cta-row{display:none!important}
+  .reveal{opacity:1!important;transform:none!important}
+  .ans{grid-template-rows:1fr!important}
+  .print-only{display:block}
+  .mast .w2{-webkit-text-fill-color:var(--mint);background:none;color:var(--mint)}
+  .facts{position:static}
+  .hero{padding-top:44px}
+  .band{padding-block:64px}
+}
+</style>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#portada"><i></i>Consenso Verde</a>
+    <nav aria-label="Secciones del periódico">
+      <a href="#reportaje">Reportaje</a><a href="#ia-y-carrera">IA y carrera</a><a href="#voces">Voces</a><a href="#debate">Debate</a><a href="#changelog">Changelog</a><a href="#mitos">Mitos</a><a href="#historia">Historia</a><a href="#proyecto">Proyecto</a><a href="#cierre">Cierre</a>
+    </nav>
+  </div>
+  <div class="progress" id="progress"></div>
+</header>
+
+<!-- ===================== 1. PORTADA ===================== -->
+<section class="hero" id="portada">
+  <canvas id="net" aria-hidden="true"></canvas>
+  <div class="wrap hero-in">
+    <div class="mast-top">
+      <span><b>Edición N.º 01</b></span>
+      <span>Ecología · Ingeniería de Software · Universidad Surcolombiana</span>
+      <span>Neiva, Huila</span>
+    </div>
+    <div class="hero-grid">
+      <div>
+        <h1 class="mast"><span class="w1">Consenso</span><span class="w2">Verde</span></h1>
+        <p class="lema">Elegir el consenso es elegir la huella.</p>
+        <p class="tema">Tema 9 · Criptomonedas y blockchain: el costo energético del consenso. ¿Por qué unos protocolos consumen electricidad como un país entero y otros casi nada?</p>
+        <div class="cta-row">
+          <a class="btn" href="#reportaje">Leer el reportaje</a>
+          <a class="btn ghost" href="#proyecto">Probar la calculadora</a>
+        </div>
+      </div>
+      <div class="fig-card">
+        <p class="fig-label">Lo que consume Bitcoin al año</p>
+        <p class="fig"><span class="count" data-to="138">138</span>–<span class="count" data-to="204">204</span><small>TWh</small></p>
+        <p class="fig-cap">Entre el 0,4 % y el 0,7 % de toda la electricidad del mundo. Ethereum, haciendo la misma tarea, consume unos 0,0079 TWh.</p>
+        <p class="fig-src">Fuente: Cambridge Bitcoin Electricity Consumption Index (CBECI) y Digiconomist, 2026; ethereum.org, 2026.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>138–204 TWh al año: consumo de Bitcoin (CBECI)</span><span>−99,95 %: consumo de Ethereum tras The Merge</span><span>75,42 % renovable: generación de Colombia, jul. 2026 (XM)</span><span>940,9 MW: El Quimbo + Betania, Huila</span><span>SCI: gramos de CO₂ por transacción</span>
+    <span>138–204 TWh al año: consumo de Bitcoin (CBECI)</span><span>−99,95 %: consumo de Ethereum tras The Merge</span><span>75,42 % renovable: generación de Colombia, jul. 2026 (XM)</span><span>940,9 MW: El Quimbo + Betania, Huila</span><span>SCI: gramos de CO₂ por transacción</span>
+  </div>
+</div>
+
+<!-- ===================== 2. REPORTAJE CENTRAL ===================== -->
+<section class="band light" id="reportaje">
+  <div class="wrap">
+    <p class="eyebrow">Reportaje central</p>
+    <h2>La electricidad es el precio de ponerse de acuerdo</h2>
+    <p class="byline">Por Santiago Esteban Quintero Cárdenas</p>
+
+    <div class="report-grid">
+      <article class="report-text" id="reportaje-texto">
+        <p class="first reveal">Una blockchain es un libro de cuentas compartido por miles de computadores, sin banco ni servidor central que mande. Como nadie manda solo, la red necesita una regla para decidir cuál es la próxima transacción válida. Esa regla se llama mecanismo de consenso, y ahí se decide cuánta energía va a gastar toda la red.</p>
+        <p class="reveal">Bitcoin usa Prueba de Trabajo. Miles de mineros compiten por resolver un acertijo criptográfico a fuerza bruta; el primero agrega el bloque y cobra la recompensa. La seguridad nace del gasto: falsificar el registro exigiría repetir todo ese trabajo físico, algo más caro que jugar limpio. El resultado es una carrera de equipos especializados, los ASIC, cada vez más potentes y más hambrientos de electricidad. Solo gana uno, pero todos gastaron la energía.</p>
+        <p class="reveal">La escala es enorme. Según el Cambridge Bitcoin Electricity Consumption Index y Digiconomist, Bitcoin consume entre 138 y 204 teravatios-hora al año, entre el 0,4 % y el 0,7 % de la electricidad del planeta, comparable a un país como Tailandia o Polonia.</p>
+        <blockquote class="pull reveal">Solo gana uno, pero todos gastaron la energía.<footer>Cita destacada del reportaje</footer></blockquote>
+        <p class="reveal">Ethereum demuestra que no era inevitable. El 15 de septiembre de 2022, en un cambio llamado The Merge, abandonó la Prueba de Trabajo y adoptó la Prueba de Participación, en la que los validadores bloquean sus propias criptomonedas como garantía y pierden ese dinero si hacen trampa. Su consumo cayó cerca de 99,95 %, hasta unos 0,0079 TWh al año según ethereum.org. Los usuarios, las transacciones y los contratos inteligentes siguen siendo los mismos; solo cambió la forma de ponerse de acuerdo.</p>
+        <p class="reveal">Para quienes estudiamos Ingeniería de Software, la lección es incómoda y útil: el consenso es una decisión de arquitectura. Quien elige o diseña una blockchain para un caso de uso, como pagos, trazabilidad o certificados, está decidiendo también cuánta energía consumirá el sistema, y esa decisión debería tratarse como un requisito no funcional, igual que la seguridad o el rendimiento.</p>
+        <p class="reveal">El tema no es ajeno a Colombia ni al Huila. En julio de 2026, según XM, el 75,42 % de la generación eléctrica del país provino de fuentes renovables, y en 2026 se discutió usar excedentes de energía renovable de la región Caribe para minería de Bitcoin. En el Huila, las centrales El Quimbo (400 MW) y Betania (540,9 MW) muestran el peso de la hidroelectricidad regional, el mismo tipo de energía abundante que en Paraguay, con Itaipú, atrajo mineros industriales en 2021 y 2022. La minería persigue la energía barata, no a la gente.</p>
+        <p class="reveal">Por eso importa mirar la matriz eléctrica además del mecanismo: si la red local es fósil, la huella de carbono de la minería crece con ella, y el enfriamiento de los equipos también consume agua. Elegir bien el consenso no resuelve todo, pero es la decisión más barata que un equipo de software puede tomar a tiempo.</p>
+      </article>
+
+      <aside class="facts" aria-label="Tres datos verificables">
+        <h3>Tres datos verificables</h3>
+        <div class="fact reveal">
+          <p class="n"><span class="count" data-to="138">138</span>–<span class="count" data-to="204">204</span><small>TWh/año</small></p>
+          <p>Consumo eléctrico anual de Bitcoin, entre el 0,4 % y el 0,7 % de la electricidad mundial.</p>
+          <p class="src">Fuente: Cambridge Bitcoin Electricity Consumption Index (CBECI) y Digiconomist, 2026.</p>
+        </div>
+        <div class="fact reveal" style="--d:.1s">
+          <p class="n">−<span class="count" data-to="99.95" data-d="2">99,95</span><small>%</small></p>
+          <p>Reducción del consumo de Ethereum tras pasar a Prueba de Participación (≈ 0,0079 TWh/año).</p>
+          <p class="src">Fuente: ethereum.org, 2026; Cambridge Centre for Alternative Finance.</p>
+        </div>
+        <div class="fact reveal" style="--d:.2s">
+          <p class="n"><span class="count" data-to="940.9" data-d="1">940,9</span><small>MW</small></p>
+          <p>Capacidad instalada sumada de El Quimbo (400 MW) y Betania (540,9 MW), en el Huila.</p>
+          <p class="src">Fuente: Enel Colombia / ANLA.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- La brecha a escala -->
+    <div class="panel reveal" id="duelo">
+      <div class="panel-head">
+        <div>
+          <h3>La brecha, a escala</h3>
+          <p class="sub">Consumo eléctrico anual de la red, en teravatios-hora. En escala lineal, Ethereum después de The Merge casi no se ve.</p>
+        </div>
+        <div class="seg" role="group" aria-label="Escala del gráfico">
+          <button type="button" id="sc-lin" aria-pressed="true">Lineal</button>
+          <button type="button" id="sc-log" aria-pressed="false">Logarítmica</button>
+        </div>
+      </div>
+      <div class="bars" id="bars">
+        <div class="bar-row"><div class="bar-name">Bitcoin<small>Prueba de Trabajo · rango 138–204</small></div><div class="track"><i class="fill pow" data-v="204"></i><i class="mark" data-v="138"></i></div><div class="bar-val">138–204 TWh</div></div>
+        <div class="bar-row"><div class="bar-name">Ethereum, antes de The Merge<small>Prueba de Trabajo</small></div><div class="track"><i class="fill pow" data-v="21"></i></div><div class="bar-val">≈ 21 TWh</div></div>
+        <div class="bar-row"><div class="bar-name">Ethereum, después<small>Prueba de Participación</small></div><div class="track"><i class="fill pos" data-v="0.0079"></i></div><div class="bar-val">≈ 0,0079 TWh</div></div>
+      </div>
+      <div class="axis" id="axis"></div>
+      <p class="note">Cifras: CBECI y Digiconomist (Bitcoin, 2026); Cambridge Centre for Alternative Finance y ethereum.org (Ethereum). La línea negra marca el extremo inferior del rango de Bitcoin. Son estimaciones de distintas fuentes, útiles para ver el orden de magnitud: la diferencia es de miles de veces.</p>
+    </div>
+
+    <!-- Simulador -->
+    <div class="panel reveal" id="simulador">
+      <h3>Un bloque, dos formas de ponerse de acuerdo</h3>
+      <p class="sub">Produce bloques y compara cuántos participantes gastan recursos. Las unidades de energía son ilustrativas y no están a escala: la diferencia real es mucho mayor.</p>
+      <div class="sim-grid">
+        <div class="sim pow" id="sim-pow">
+          <h4>Prueba de Trabajo</h4>
+          <p class="d">Todos los mineros compiten; solo uno gana, todos gastan.</p>
+          <div class="cells" aria-hidden="true"></div>
+          <div class="sim-foot"><div class="meter"><b class="tot">0</b>unidades de energía</div><button type="button" class="btn go">Producir un bloque</button></div>
+        </div>
+        <div class="sim pos" id="sim-pos">
+          <h4>Prueba de Participación</h4>
+          <p class="d">Se elige un validador que ya arriesgó su capital; los demás no compiten.</p>
+          <div class="cells" aria-hidden="true"></div>
+          <div class="sim-foot"><div class="meter"><b class="tot">0</b>unidades de energía</div><button type="button" class="btn go">Producir un bloque</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 3. IA Y MI CARRERA ===================== -->
+<section class="band teal" id="ia-y-carrera">
+  <div class="wrap">
+    <p class="eyebrow">IA y mi carrera</p>
+    <h2>La IA también se mide en kilovatios-hora</h2>
+    <p class="byline">Por el equipo de Consenso Verde</p>
+    <div class="ia-grid" id="ia-bloques">
+      <div class="ia-card reveal">
+        <span class="chip">Usos reales en la profesión</span>
+        <p>En el trabajo diario de un ingeniero de software la IA ya hace parte de las herramientas: asistentes que sugieren y completan código, generación de pruebas unitarias, explicación y revisión de código ajeno, ayuda para redactar documentación y para convertir requisitos escritos en historias de usuario. Su valor está en acelerar tareas repetitivas y en ofrecer un primer borrador. Su límite es que todo borrador necesita revisión humana: el equipo sigue siendo responsable de lo que se publica.</p>
+      </div>
+      <div class="ia-card reveal" style="--d:.1s">
+        <span class="chip">Propuesta práctica desde software</span>
+        <p>Nuestra propuesta es tratar la energía como un requisito no funcional. En el documento de requisitos de cualquier proyecto que use blockchain o IA se exige un criterio de consumo, y se justifica por escrito cualquier opción de alto gasto, como la Prueba de Trabajo. El equipo de arquitectura lo ejecuta y el líder técnico lo aprueba. Se mide con el indicador Software Carbon Intensity (SCI, ISO/IEC 21031:2024), que reporta gramos de CO₂ equivalente por unidad de valor, por ejemplo por transacción, y compara la opción elegida con las descartadas. La calculadora de este periódico es el prototipo de esa idea.</p>
+      </div>
+      <div class="ia-card reveal" style="--d:.2s">
+        <span class="chip">Riesgos ambientales y éticos</span>
+        <p>Primero, el costo energético y de agua: entrenar y ejecutar modelos grandes exige centros de datos que consumen electricidad y agua para enfriarse, y cada consulta innecesaria suma. Segundo, el hardware: la carrera por equipos más potentes acelera la basura electrónica. Tercero, los riesgos éticos: la IA puede inventar respuestas con apariencia de seguridad, reproducir sesgos y exponer código o datos privados si se pegan en servicios externos. Por eso proponemos usarla con criterio, verificar siempre sus resultados y declarar abiertamente en qué se usó, como hacemos al final de este periódico.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 4. VOCES DEL TERRITORIO ===================== -->
+<section class="band light" id="voces">
+  <div class="wrap">
+    <p class="eyebrow">Voces del territorio</p>
+    <h2>Dos miradas desde el Huila</h2>
+    <p class="lead">Entrevistas ficticias con roles reales de la región, escritas para imaginar cómo se vive el tema desde la energía y desde el software.</p>
+    <div class="voices">
+      <article class="voice reveal">
+        <header>
+          <div class="avatar" aria-hidden="true">M</div>
+          <div><h3>Marcela, ingeniera de operación</h3><p>Central hidroeléctrica del Huila</p><span class="tag">Entrevista ficticia</span></div>
+        </header>
+        <div class="qa"><p class="q">¿Qué pasaría si una granja de minería pidiera conectarse a la red de la región?</p><p class="a">Lo primero sería saber cuánta potencia necesita y cuándo. Una carga constante e intensa compite con los usuarios residenciales e industriales. No es un no automático, pero exigiría estudiar la conexión y asegurar que esa energía no se le quite a la comunidad.</p></div>
+        <div class="qa"><p class="q">¿Tener energía renovable es una ventaja?</p><p class="a">Sí, la huella por kilovatio-hora es menor que con carbón. Pero energía limpia no significa energía infinita. Usarla para algo que se podría hacer con mucho menos consumo también hay que justificarlo.</p></div>
+        <div class="qa"><p class="q">¿Qué les pediría a los desarrolladores?</p><p class="a">Que pregunten cuánta energía necesita lo que están construyendo antes de elegir la tecnología.</p></div>
+      </article>
+      <article class="voice reveal" style="--d:.12s">
+        <header>
+          <div class="avatar" aria-hidden="true">A</div>
+          <div><h3>Andrés, desarrollador de software</h3><p>Neiva, Huila</p><span class="tag">Entrevista ficticia</span></div>
+        </header>
+        <div class="qa"><p class="q">Cuando eligió blockchain para un proyecto, ¿midió su consumo?</p><p class="a">Sinceramente no. Elegimos por lo que sabíamos hacer. Después supe que el mecanismo de consenso cambia el consumo en varios órdenes de magnitud y entendí que era una decisión de arquitectura, no un detalle.</p></div>
+        <div class="qa"><p class="q">¿Qué cambiaría hoy?</p><p class="a">Pondría el consumo en los requisitos desde el inicio y compararía al menos tres alternativas, incluida una base de datos tradicional, que muchas veces resuelve el problema sin blockchain.</p></div>
+        <div class="qa"><p class="q">¿Qué consejo les da a los estudiantes?</p><p class="a">Que aprendan a medir. Si no tienen un número, no pueden mejorar nada.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 5. DEBATE CRUZADO ===================== -->
+<section class="band deep" id="debate">
+  <div class="wrap">
+    <p class="eyebrow">Debate cruzado</p>
+    <h2>¿Es la Prueba de Trabajo un desperdicio?</h2>
+    <p class="lead">Dos columnas de opinión, dos posturas opuestas, firmadas por integrantes distintos del equipo.</p>
+    <div class="debate">
+      <article class="col a reveal">
+        <h3>La Prueba de Trabajo tiene sentido</h3>
+        <p class="post">Postura a favor</p>
+        <p class="txt" id="deb-a">La Prueba de Trabajo no es un desperdicio, es el precio de la seguridad. En Bitcoin nadie manda y nadie necesita confiar en otro: para falsificar el registro habría que igualar el trabajo físico de todos los demás mineros juntos, y eso hace que hacer trampa sea carísimo. Además, la minería puede ir a donde sobra la energía, como pasó con la hidroelectricidad de Itaipú en Paraguay, y ayudar a financiar infraestructura. Si la electricidad es renovable y de excedentes, el costo ambiental baja y la red conserva una seguridad basada en trabajo real. Condenar el consumo sin mirar de dónde viene la energía y qué protege es quedarse con la mitad de la cuenta.</p>
+        <p class="sign">Carlos Perez Roso <span>· columna de opinión</span></p>
+      </article>
+      <div class="vs" aria-hidden="true"><span>VS</span></div>
+      <article class="col b reveal" style="--d:.12s">
+        <h3>La Prueba de Trabajo es evitable</h3>
+        <p class="post">Postura en contra</p>
+        <p class="txt" id="deb-b">Ethereum ya demostró que se puede asegurar una red sin quemar electricidad: tras The Merge su consumo cayó cerca de 99,95 % y la red sigue haciendo lo mismo para sus usuarios. Si la misma función se logra con miles de veces menos energía, seguir gastando cientos de teravatios-hora al año es una decisión, no una necesidad. Además, la minería se instala donde la electricidad es más barata, sin importar si esa región tiene la infraestructura o el agua para sostenerla, y puede competir con las comunidades por la misma red. Quien diseña un sistema nuevo debería partir de la opción de bajo consumo y exigir una justificación técnica para lo contrario.</p>
+        <p class="sign">Juan Manuel Salazar Narvaez <span>· columna de opinión</span></p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 6. SECCIONES LLAMATIVAS: CHANGELOG ===================== -->
+<section class="band light" id="changelog">
+  <div class="wrap">
+    <p class="eyebrow">Changelog del planeta</p>
+    <h2>Siete versiones del problema</h2>
+    <p class="lead">Hitos ambientales, técnicos y regulatorios del tema, del más reciente al más antiguo.</p>
+    <div class="tbl-wrap reveal">
+      <table class="log">
+        <thead><tr><th>Fecha</th><th>Hito</th><th>Tipo</th><th>Fuente</th></tr></thead>
+        <tbody>
+          <tr><td class="d">Jul. 2026</td><td>El 75,42 % de la generación eléctrica de Colombia provino de recursos renovables.</td><td><span class="ty e">Energía</span></td><td class="s">XM, reporte de generación 2026</td></tr>
+          <tr><td class="d">2026</td><td>Se plantea aprovechar excedentes de energía renovable de la región Caribe para alimentar minería de Bitcoin en Colombia.</td><td><span class="ty a">Debate</span></td><td class="s">CoinDesk, 2026</td></tr>
+          <tr><td class="d">Dic. 2025</td><td>La DIAN incorpora obligaciones de reporte de información sobre criptoactivos con el marco CARF (Resolución 000240).</td><td><span class="ty r">Regulación</span></td><td class="s">DIAN, Resolución 000240 de 2025</td></tr>
+          <tr><td class="d">2024</td><td>Se publica la norma ISO/IEC 21031:2024, Software Carbon Intensity, para medir emisiones de carbono del software.</td><td><span class="ty t">Estándar</span></td><td class="s">ISO/IEC 21031:2024</td></tr>
+          <tr><td class="d">15 sep. 2022</td><td>The Merge: Ethereum pasa a Prueba de Participación y reduce su consumo energético cerca de 99,95 %.</td><td><span class="ty t">Tecnología</span></td><td class="s">ethereum.org; Cambridge Centre for Alternative Finance</td></tr>
+          <tr><td class="d">2021–2022</td><td>Llegan mineros industriales a Paraguay atraídos por la energía de Itaipú, a cerca de US$ 0,03 por kWh.</td><td><span class="ty a">Energía</span></td><td class="s">CoinDesk, 2026</td></tr>
+          <tr><td class="d">2021</td><td>La Green Software Foundation publica por primera vez la especificación SCI.</td><td><span class="ty t">Estándar</span></td><td class="s">Green Software Foundation</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 6. SECCIONES LLAMATIVAS: MITOS Y VERDADES ===================== -->
+<section class="band teal" id="mitos">
+  <div class="wrap">
+    <p class="eyebrow">Mitos y verdades</p>
+    <h2>Cinco ideas que conviene revisar</h2>
+    <p class="lead">Toca cada mito para ver la respuesta corta y su fuente.</p>
+    <div id="mitos-lista">
+      <div class="myth open">
+        <div class="myth-q"><p><small>Mito 1</small>Bitcoin gasta tanta energía porque está mal programado</p><button type="button" aria-expanded="true">Ocultar respuesta</button></div>
+        <div class="ans"><div><div class="ans-in"><span class="verdict v-f">Falso</span><p>El gasto es parte del diseño. En la Prueba de Trabajo la seguridad depende del trabajo gastado, así que consumir energía es el mecanismo que impide hacer trampa.</p><p class="src">Fuente: CBECI y Digiconomist (consumo); ethereum.org (mecanismo).</p></div></div></div>
+      </div>
+      <div class="myth">
+        <div class="myth-q"><p><small>Mito 2</small>Todas las blockchains consumen como Bitcoin</p><button type="button" aria-expanded="false">Ver respuesta</button></div>
+        <div class="ans"><div><div class="ans-in"><span class="verdict v-f">Falso</span><p>Ethereum redujo su consumo cerca de 99,95 % al cambiar de mecanismo de consenso. El consumo depende de la decisión de diseño, no de la tecnología blockchain en sí.</p><p class="src">Fuente: ethereum.org, 2026; Cambridge Centre for Alternative Finance.</p></div></div></div>
+      </div>
+      <div class="myth">
+        <div class="myth-q"><p><small>Mito 3</small>Sin quemar energía, una red no puede ser segura</p><button type="button" aria-expanded="false">Ver respuesta</button></div>
+        <div class="ans"><div><div class="ans-in"><span class="verdict v-f">Falso</span><p>En la Prueba de Participación la garantía es capital en riesgo: los validadores bloquean sus criptomonedas y las pierden si hacen trampa. Es otra forma de hacer costoso el engaño.</p><p class="src">Fuente: ethereum.org.</p></div></div></div>
+      </div>
+      <div class="myth">
+        <div class="myth-q"><p><small>Mito 4</small>La minería solo va a países con energía sucia</p><button type="button" aria-expanded="false">Ver respuesta</button></div>
+        <div class="ans"><div><div class="ans-in"><span class="verdict v-m">Matiz</span><p>La minería va donde la electricidad es más barata, y a veces es hidroeléctrica, como en Paraguay con Itaipú. El problema es que, si la matriz local es fósil, la huella crece con ella, y además el enfriamiento consume agua.</p><p class="src">Fuente: CoinDesk, 2026.</p></div></div></div>
+      </div>
+      <div class="myth">
+        <div class="myth-q"><p><small>Mito 5</small>Colombia y el Huila no tienen nada que ver con este tema</p><button type="button" aria-expanded="false">Ver respuesta</button></div>
+        <div class="ans"><div><div class="ans-in"><span class="verdict v-f">Falso</span><p>En 2026 se discutió usar excedentes renovables para minería, la DIAN ya exige reportar operaciones con criptoactivos y, solo en el Huila, El Quimbo y Betania suman 940,9 MW de capacidad instalada.</p><p class="src">Fuente: CoinDesk, 2026; DIAN, Resolución 000240 de 2025; Enel Colombia / ANLA.</p></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 7. HISTORIA QUE INSPIRA ===================== -->
+<section class="band deep" id="historia">
+  <div class="wrap">
+    <p class="eyebrow">Historia que inspira</p>
+    <h2>El día que Ethereum apagó la carrera</h2>
+    <div class="story">
+      <div class="reveal">
+        <p class="t">El 15 de septiembre de 2022, Ethereum hizo algo que muchos consideraban difícil: cambió el motor de su consenso mientras la red seguía funcionando. Dejó la Prueba de Trabajo y pasó por completo a la Prueba de Participación, en un cambio conocido como The Merge.</p>
+        <p class="t">Antes consumía unos 21 TWh al año. Después, según ethereum.org y el Cambridge Centre for Alternative Finance, quedó en unos 0,0079 TWh. Los mismos usuarios, las mismas transacciones y los mismos contratos inteligentes, con una fracción mínima de la electricidad.</p>
+        <p class="t">La historia inspira porque demuestra que el costo energético de un sistema es una decisión de ingeniería que se puede cambiar.</p>
+        <p class="src">Fuente: Cambridge Centre for Alternative Finance · ethereum.org (2026).</p>
+      </div>
+      <div class="reveal" style="--d:.1s">
+        <div class="ba">
+          <div class="box pw"><p class="lbl">Antes · Prueba de Trabajo</p><p class="big">≈ 21<small>TWh/año</small></p></div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="box ps"><p class="lbl">Después · Prueba de Participación</p><p class="big">≈ 0,0079<small>TWh/año</small></p></div>
+        </div>
+        <div class="drop"><span class="big2">−<span class="count" data-to="99.95" data-d="2">99,95</span> %</span><span class="l">de reducción en el consumo energético de toda la red</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== NOTICIA DE IMPACTO: PROYECTO ===================== -->
+<section class="band light" id="proyecto">
+  <div class="wrap">
+    <p class="eyebrow">Noticia de impacto · Proyecto en una página</p>
+    <h2>Calculadora Consenso Verde</h2>
+    <p class="lead">Nuestra propuesta de solución: una herramienta que cualquier equipo puede abrir en el navegador para comparar la huella de carbono de elegir Prueba de Trabajo, Prueba de Participación o una base de datos tradicional.</p>
+
+    <table class="proj-table reveal">
+      <tbody>
+        <tr><th>Nombre del proyecto</th><td>Calculadora Consenso Verde</td></tr>
+        <tr><th>Problema</th><td>Elegir el mecanismo de consenso cambia el consumo de una blockchain en varios órdenes de magnitud, y casi nunca se mide al diseñar. Tres cifras: Bitcoin consume 138–204 TWh al año; eso es entre el 0,4 % y el 0,7 % de la electricidad mundial (CBECI y Digiconomist, 2026); y Ethereum redujo su consumo 99,95 % tras The Merge (ethereum.org, 2026).</td></tr>
+        <tr><th>Decisión técnica</th><td>Qué mecanismo de consenso usar (Prueba de Trabajo o de Participación) o si una base de datos tradicional basta. Se registra como requisito no funcional y se compara con el indicador SCI.</td></tr>
+        <tr><th>Usuario</th><td>Un analista de requisitos o arquitecto de un equipo de software, por ejemplo de una cooperativa cafetera o de la universidad en el Huila, con un computador normal y conexión básica a internet. Funciona en el navegador, sin instalar nada.</td></tr>
+        <tr><th>Solución y prototipo</th><td><b>Qué construimos:</b> una calculadora web de una sola página que estima el SCI por transacción de tres alternativas. <b>Qué funciona en la demostración:</b> cálculo en vivo, comparación visual, veredicto frente a la meta y escenarios de ejemplo. <b>Qué falta:</b> datos medidos por red, carga automática del factor de emisión oficial de Colombia y exportar el reporte.</td></tr>
+        <tr><th>Métrica</th><td>Indicador SCI (gCO₂eq por transacción). Línea base: la opción de Prueba de Trabajo. Meta: reducir al menos 99 % frente a esa línea base.</td></tr>
+        <tr><th>Riesgo principal</th><td>Que los datos de entrada sean estimaciones y den una falsa sensación de precisión. Qué haríamos: mostrar todos los supuestos, permitir editarlos, reemplazarlos por valores medidos o fuentes oficiales y presentar los resultados como órdenes de magnitud.</td></tr>
+      </tbody>
+    </table>
+
+    <!-- Prototipo -->
+    <h3 style="font:400 1.6rem var(--display);text-transform:uppercase;margin:0 0 14px">Prototipo funcional</h3>
+    <div class="calc reveal" id="calc">
+      <div class="calc-in">
+        <h3>Calculadora de huella del consenso</h3>
+        <p class="formula">SCI = ((E × I) + M) / R</p>
+        <div class="presets" role="group" aria-label="Escenarios de ejemplo">
+          <button type="button" data-r="50000">Trazabilidad de café (50.000)</button>
+          <button type="button" data-r="20000">Certificados académicos (20.000)</button>
+          <button type="button" data-r="8000">Votación estudiantil (8.000)</button>
+        </div>
+        <div class="fields">
+          <label for="c-r">Transacciones por año (R)<input id="c-r" type="number" min="1" step="1" value="50000"></label>
+          <label for="c-i">Intensidad de carbono de la red (I, gCO₂eq/kWh)<input id="c-i" type="number" min="0" step="1" value="200"></label>
+        </div>
+        <table class="opts">
+          <thead><tr><th>Opción</th><th>E: kWh por transacción</th><th>M: gCO₂eq por año</th></tr></thead>
+          <tbody>
+            <tr><td>Prueba de Trabajo</td><td><input id="c-e-pow" type="number" min="0" step="any" value="700" aria-label="Energía por transacción en Prueba de Trabajo"></td><td><input id="c-m-pow" type="number" min="0" step="any" value="50000" aria-label="Emisiones incorporadas en Prueba de Trabajo"></td></tr>
+            <tr><td>Prueba de Participación</td><td><input id="c-e-pos" type="number" min="0" step="any" value="0.35" aria-label="Energía por transacción en Prueba de Participación"></td><td><input id="c-m-pos" type="number" min="0" step="any" value="50000" aria-label="Emisiones incorporadas en Prueba de Participación"></td></tr>
+            <tr><td>Base de datos tradicional</td><td><input id="c-e-db" type="number" min="0" step="any" value="0.001" aria-label="Energía por transacción en base de datos"></td><td><input id="c-m-db" type="number" min="0" step="any" value="50000" aria-label="Emisiones incorporadas en base de datos"></td></tr>
+          </tbody>
+        </table>
+        <button type="button" class="mini" id="c-merge">Aplicar a Participación la reducción del Merge (−99,95 %)</button>
+        <p class="calc-note">Los valores iniciales son supuestos ilustrativos del equipo: I = 200 viene del ejemplo de la exposición y la energía por transacción solo fija un orden de magnitud. Antes de sacar conclusiones, reemplácelos por datos medidos y por el factor de emisión oficial de Colombia (UPME/XM). E: energía por transacción, I: intensidad de carbono, M: emisiones incorporadas del hardware, R: unidad de valor (transacciones).</p>
+      </div>
+      <div class="calc-out" aria-live="polite">
+        <div class="res pow" id="res-pow">
+          <div class="res-top"><b>Prueba de Trabajo</b><span class="v"><span class="sci">0</span><small>gCO₂eq / transacción</small></span></div>
+          <div class="tr"><div class="fl"></div></div>
+          <div class="meta"><span class="pill base">Línea base</span><span>Total: <b class="tot">0</b> tCO₂eq al año</span></div>
+        </div>
+        <div class="res pos" id="res-pos">
+          <div class="res-top"><b>Prueba de Participación</b><span class="v"><span class="sci">0</span><small>gCO₂eq / transacción</small></span></div>
+          <div class="tr"><div class="fl"></div></div>
+          <div class="meta"><span class="pill ok verdict-pill">Cumple la meta</span><span>Reducción: <b class="red">0</b> %</span><span>Total: <b class="tot">0</b> tCO₂eq al año</span></div>
+        </div>
+        <div class="res db" id="res-db">
+          <div class="res-top"><b>Base de datos tradicional</b><span class="v"><span class="sci">0</span><small>gCO₂eq / transacción</small></span></div>
+          <div class="tr"><div class="fl"></div></div>
+          <div class="meta"><span class="pill ok verdict-pill">Cumple la meta</span><span>Reducción: <b class="red">0</b> %</span><span>Total: <b class="tot">0</b> tCO₂eq al año</span></div>
+        </div>
+        <p class="reading" id="reading"></p>
+        <p class="src" style="margin:10px 0 0;color:var(--on-dark-soft)">Meta del proyecto: reducir al menos 99 % frente a la línea base. Barras en escala logarítmica.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 8. CIERRE ===================== -->
+<section class="band deep" id="cierre">
+  <div class="wrap">
+    <p class="eyebrow">Cierre</p>
+    <h2>Lo que nos llevamos de esta edición</h2>
+    <div class="close-grid" style="margin-top:34px">
+      <div class="reveal">
+        <h3>Lo que aprendimos</h3>
+        <ul>
+          <li>El consenso es una decisión de arquitectura: cambia el consumo en varios órdenes de magnitud.</li>
+          <li>La energía limpia no justifica el gasto innecesario; conviene medir antes de elegir.</li>
+          <li>Lo que no se mide no se mejora: el SCI da un número comparable por transacción.</li>
+        </ul>
+      </div>
+      <div class="reveal" style="--d:.08s">
+        <h3>Créditos</h3>
+        <p><b>Presentado por:</b><br>Santiago Esteban Quintero Cárdenas<br>Carlos Perez Roso<br>Juan Manuel Salazar Narvaez</p>
+        <p>Proyecto final de Ecología, Ingeniería de Software, Universidad Surcolombiana, Neiva. Tema 9: Criptomonedas y blockchain, el costo energético del consenso.</p>
+      </div>
+      <div class="ia-decl reveal" style="--d:.16s" id="decl-ia">
+        <h3>Declaración de uso de IA</h3>
+        <p><b>Herramienta:</b> Claude (Anthropic).</p>
+        <p><b>Para qué:</b> organizar la estructura del periódico según la guía del curso, redactar borradores de los textos a partir de la exposición del grupo y programar la página web y la calculadora.</p>
+        <p><b>Revisión:</b> el equipo leyó el contenido, comprobó las cifras contra las fuentes citadas y asume la responsabilidad de lo publicado. Las dos entrevistas son ficticias y están marcadas como tales.</p>
+      </div>
+    </div>
+
+    <div class="sources" id="fuentes">
+      <h3>Fuentes</h3>
+      <ol>
+        <li><b>Cambridge Bitcoin Electricity Consumption Index (CBECI)</b>, Cambridge Centre for Alternative Finance: consumo estimado de Bitcoin, 2026.</li>
+        <li><b>Digiconomist</b>, Bitcoin Energy Consumption Index: estimación alternativa de consumo, 2026.</li>
+        <li><b>ethereum.org</b>, «La Fusión» (The Merge): reducción cercana al 99,95 % en el consumo de Ethereum, 2026.</li>
+        <li><b>Cambridge Centre for Alternative Finance</b>: estimación del consumo de Ethereum antes y después de The Merge.</li>
+        <li><b>DIAN</b>, Resolución 000240 de diciembre de 2025: marco de reporte de criptoactivos (OCDE/CARF).</li>
+        <li><b>Enel Colombia / ANLA</b>: capacidad instalada de El Quimbo (400 MW) y Betania (540,9 MW), Huila.</li>
+        <li><b>ISO/IEC 21031:2024</b>, Software Carbon Intensity (SCI): metodología para cuantificar emisiones de carbono del software.</li>
+        <li><b>Green Software Foundation</b>, Software Carbon Intensity (SCI) Specification: greensoftware.foundation/standards/sci</li>
+        <li><b>XM</b> (2026): reporte de generación eléctrica de Colombia; en julio de 2026, 75,42 % de la generación fue renovable.</li>
+        <li><b>CoinDesk</b> (2026): uso de excedentes de energía renovable para minería de Bitcoin en Colombia y caso de Paraguay con la energía de Itaipú.</li>
+      </ol>
+    </div>
+
+    <div class="url-box print-only">Parte interactiva de esta edición (calculadora, simulador y gráfico con escala): <a id="live-url" href="https://claude.ai/artifact/8Qcqn8aXQk3GMZeQhz2kMi">https://claude.ai/artifact/8Qcqn8aXQk3GMZeQhz2kMi</a></div>
+
+    <div class="foot"><span>Consenso Verde · Edición N.º 01</span><a href="#portada">Volver arriba ↑</a></div>
+  </div>
+</section>
+
+<script>
+(function(){
+  'use strict';
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $ = function(id){ return document.getElementById(id); };
+  var nf = function(v,d){ return v.toLocaleString('es-CO',{minimumFractionDigits:d,maximumFractionDigits:d}); };
+  var fmt = function(v){ return v.toLocaleString('es-CO',{maximumSignificantDigits:4}); };
+
+  /* ---- barra de progreso ---- */
+  var prog = $('progress');
+  function onScroll(){
+    var h = document.documentElement.scrollHeight - innerHeight;
+    prog.style.transform = 'scaleX(' + (h>0 ? Math.min(1, scrollY/h) : 0) + ')';
+  }
+  addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  /* ---- reveal ---- */
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  /* ---- contadores ---- */
+  function runCount(el){
+    if(reduce || el._ran) return; el._ran = 1;
+    var to = parseFloat(el.dataset.to), d = +(el.dataset.d||0), t0 = performance.now(), dur = 1400;
+    (function step(t){
+      var p = Math.min(1,(t-t0)/dur), e = 1-Math.pow(1-p,3);
+      el.textContent = nf(to*e,d);
+      if(p<1) requestAnimationFrame(step); else el.textContent = nf(to,d);
+    })(t0);
+  }
+  var cio = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ runCount(e.target); cio.unobserve(e.target); } });
+  },{threshold:.4});
+  document.querySelectorAll('.count').forEach(function(el){ cio.observe(el); });
+
+  /* ---- red de bloques en la portada ---- */
+  (function(){
+    var c = $('net'); if(!c) return;
+    var ctx = c.getContext('2d'), W=0, H=0, nodes=[], pulses=[], raf=0, visible=true;
+    function size(){
+      var r = c.parentElement.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio||1,2);
+      W = r.width; H = r.height; c.width = W*dpr; c.height = H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+      var n = Math.round(Math.min(80, W*H/15000));
+      nodes = []; for(var i=0;i<n;i++) nodes.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,hot:Math.random()<.2});
+    }
+    function frame(){
+      ctx.clearRect(0,0,W,H);
+      var L = 150, i, j, a, b, d;
+      for(i=0;i<nodes.length;i++){ a = nodes[i]; a.x+=a.vx; a.y+=a.vy; if(a.x<0||a.x>W) a.vx*=-1; if(a.y<0||a.y>H) a.vy*=-1; }
+      for(i=0;i<nodes.length;i++){
+        a = nodes[i];
+        for(j=i+1;j<nodes.length;j++){
+          b = nodes[j]; d = Math.hypot(a.x-b.x,a.y-b.y);
+          if(d<L){
+            ctx.strokeStyle = 'rgba(45,226,192,' + (0.26*(1-d/L)) + ')'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+            if(!reduce && d<L*.6 && Math.random()<.0012 && pulses.length<16) pulses.push({a:a,b:b,t:0,hot:a.hot||b.hot});
+          }
+        }
+      }
+      for(i=0;i<nodes.length;i++){ a = nodes[i]; ctx.fillStyle = a.hot ? 'rgba(255,90,71,.95)' : 'rgba(45,226,192,.9)'; ctx.fillRect(a.x-2.5,a.y-2.5,5,5); }
+      pulses = pulses.filter(function(p){
+        p.t += .022; var x = p.a.x+(p.b.x-p.a.x)*p.t, y = p.a.y+(p.b.y-p.a.y)*p.t;
+        ctx.fillStyle = p.hot ? '#ffd23f' : '#ffffff'; ctx.fillRect(x-3.5,y-3.5,7,7); return p.t<1;
+      });
+      if(!reduce && visible) raf = requestAnimationFrame(frame);
+    }
+    size(); frame();
+    addEventListener('resize', function(){ size(); if(reduce) frame(); });
+    new IntersectionObserver(function(es){
+      visible = es[0].isIntersecting;
+      if(visible && !reduce){ cancelAnimationFrame(raf); raf = requestAnimationFrame(frame); }
+    }).observe(c.parentElement);
+  })();
+
+  /* ---- grafico "la brecha" ---- */
+  (function(){
+    var bars = $('bars'), axis = $('axis'), mode = 'lin', MAXV = 204, LO = 0.001, HI = 300;
+    function pos(v){
+      if(mode==='lin') return Math.min(100, v/MAXV*100);
+      return Math.max(0, (Math.log10(v)-Math.log10(LO))/(Math.log10(HI)-Math.log10(LO))*100);
+    }
+    function draw(){
+      bars.querySelectorAll('.fill').forEach(function(f){ f.style.width = pos(+f.dataset.v) + '%'; });
+      bars.querySelectorAll('.mark').forEach(function(m){ m.style.left = 'calc(' + pos(+m.dataset.v) + '% - 1px)'; });
+      var ticks = mode==='lin' ? [0,50,100,150,200] : [0.001,0.01,0.1,1,10,100];
+      axis.innerHTML = ticks.map(function(t){
+        var lab = (t===0 ? '0' : t>=1 ? nf(t,0) : nf(t, t<0.01?3:(t<0.1?2:1))) + ' TWh';
+        return '<span style="left:' + pos(t) + '%">' + lab + '</span>';
+      }).join('');
+    }
+    function setMode(m){
+      mode = m; $('sc-lin').setAttribute('aria-pressed', m==='lin'); $('sc-log').setAttribute('aria-pressed', m==='log'); draw();
+    }
+    $('sc-lin').addEventListener('click', function(){ setMode('lin'); });
+    $('sc-log').addEventListener('click', function(){ setMode('log'); });
+    draw();
+    new IntersectionObserver(function(es,o){
+      if(es[0].isIntersecting){
+        bars.querySelectorAll('.fill').forEach(function(f,i){ f.style.animationDelay = (i*.15)+'s'; f.classList.add('replay'); });
+        o.disconnect();
+      }
+    },{threshold:.35}).observe($('duelo'));
+  })();
+
+  /* ---- simulador ---- */
+  function sim(id,type){
+    var el = $(id), grid = el.querySelector('.cells'), out = el.querySelector('.tot'), btn = el.querySelector('.go'), n = 24, total = 0, busy = false, cells = [];
+    for(var i=0;i<n;i++){ var d = document.createElement('div'); d.className='cell'; grid.appendChild(d); cells.push(d); }
+    function round(animate){
+      var w = Math.floor(Math.random()*n);
+      cells.forEach(function(c){ c.className='cell'; });
+      if(type==='pow'){
+        total += n; out.textContent = total;
+        if(animate && !reduce){
+          busy = true; cells.forEach(function(c){ c.classList.add('work'); });
+          setTimeout(function(){ cells.forEach(function(c){ c.classList.remove('work'); }); cells[w].classList.add('win'); busy = false; }, 900);
+        } else { cells[w].classList.add('win'); }
+      } else {
+        total += 1; out.textContent = total; cells[w].classList.add('pick');
+      }
+    }
+    btn.addEventListener('click', function(){ if(!busy) round(true); });
+    round(false); round(false); round(false);
+  }
+  sim('sim-pow','pow'); sim('sim-pos','pos');
+
+  /* ---- mitos ---- */
+  document.querySelectorAll('.myth').forEach(function(m){
+    var b = m.querySelector('button');
+    b.addEventListener('click', function(){
+      var o = m.classList.toggle('open');
+      b.setAttribute('aria-expanded', o); b.textContent = o ? 'Ocultar respuesta' : 'Ver respuesta';
+    });
+  });
+
+  /* ---- calculadora SCI ---- */
+  var keys = ['pow','pos','db'];
+  function calc(){
+    var R = Math.max(1, +$('c-r').value || 1), I = Math.max(0, +$('c-i').value || 0), res = {}, vals = [];
+    keys.forEach(function(k){
+      var e = Math.max(0, +$('c-e-'+k).value || 0), m = Math.max(0, +$('c-m-'+k).value || 0);
+      var sci = (e*R*I + m)/R; res[k] = {sci:sci, tot:sci*R/1e6}; vals.push(Math.max(sci,1e-3));
+    });
+    var lo = Math.log10(Math.min.apply(null,vals)) - .6, hi = Math.log10(Math.max.apply(null,vals)) + .05, base = res.pow.sci;
+    keys.forEach(function(k){
+      var row = $('res-'+k), r = res[k], red = base>0 ? (1-r.sci/base)*100 : 0;
+      row.querySelector('.sci').textContent = fmt(r.sci);
+      row.querySelector('.tot').textContent = fmt(r.tot);
+      row.querySelector('.fl').style.width = Math.max(3, Math.min(100,(Math.log10(Math.max(r.sci,1e-3))-lo)/(hi-lo)*100)) + '%';
+      if(k!=='pow'){
+        row.querySelector('.red').textContent = nf(Math.max(red,0), red>=99.99 ? 3 : 2);
+        var p = row.querySelector('.verdict-pill'), ok = red>=99;
+        p.textContent = ok ? 'Cumple la meta' : 'No cumple la meta'; p.className = 'pill verdict-pill ' + (ok?'ok':'no');
+      }
+    });
+    $('reading').textContent = 'Con ' + nf(R,0) + ' transacciones al año, la opción de Prueba de Trabajo emitiría ' + fmt(res.pow.tot) + ' tCO₂eq, frente a ' + fmt(res.pos.tot) + ' de Prueba de Participación y ' + fmt(res.db.tot) + ' de una base de datos tradicional.';
+  }
+  ['c-r','c-i','c-e-pow','c-e-pos','c-e-db','c-m-pow','c-m-pos','c-m-db'].forEach(function(id){ $(id).addEventListener('input', calc); });
+  document.querySelectorAll('.presets button').forEach(function(b){ b.addEventListener('click', function(){ $('c-r').value = b.dataset.r; calc(); }); });
+  $('c-merge').addEventListener('click', function(){ $('c-e-pos').value = +((+$('c-e-pow').value||0)*0.0005).toPrecision(4); calc(); });
+  calc();
+})();
+</script>
