@@ -293,6 +293,7 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
 .url-box{margin-top:30px;padding:16px 20px;border:2px dashed var(--mint);font:500 1rem var(--ui)}
 .foot{margin-top:40px;font:500 .8rem var(--ui);color:var(--on-dark-soft);display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
 .pdf-action{margin-top:32px;text-align:center}
+.pdf-hint{font:500 .8rem/1.5 var(--ui);color:var(--on-dark-soft);max-width:60ch;margin:12px auto 0}
 
 /* ---------- responsive ---------- */
 @media (max-width:980px){
@@ -324,9 +325,10 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
 }
 
 /* ---------- version PDF (impresion) ---------- */
-@page{size:297mm 3600mm;margin:8mm}
+@page{size:900pt 9288pt;margin:0}
 @media print{
   *{animation:none!important;transition:none!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{zoom:.92}
   html{scroll-behavior:auto}
   body::before,.topbar,.progress,.hero canvas,.ticker,.sim .btn,.seg,.presets,#c-merge,.myth-q button,.hero .cta-row,.pdf-action{display:none!important}
   .reveal{opacity:1!important;transform:none!important}
@@ -735,7 +737,10 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
     <div class="url-box print-only">Parte interactiva de esta edición (calculadora, simulador y gráfico con escala): <a id="live-url" href="https://santiagoestteban.github.io/PeriodicoEcologico/">https://santiagoestteban.github.io/PeriodicoEcologico/</a></div>
 
     <div class="foot"><span>Consenso Verde · Edición N.º 01</span><a href="#portada">Volver arriba ↑</a></div>
-    <div class="pdf-action"><button type="button" class="btn" id="download-pdf">Descargar página en PDF</button></div>
+    <div class="pdf-action">
+      <button type="button" class="btn" id="download-pdf">Descargar página en PDF</button>
+      <p class="pdf-hint">En el diálogo, elige «Guardar como PDF» para conservar la hoja larga.</p>
+    </div>
   </div>
 </section>
 
