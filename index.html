@@ -213,8 +213,11 @@ h3{font:700 1.15rem/1.25 var(--ui);margin:0 0 10px}
 .ia-card p{font:400 1rem/1.65 var(--serif);margin:0;color:var(--on-dark)}
 
 /* ---------- voces ---------- */
+#voces{background:linear-gradient(rgba(3,31,33,.74),rgba(3,31,33,.77)),url("represa-huila.jpg") center/cover no-repeat;color:var(--on-dark);--focus:var(--sun)}
+#voces .eyebrow{color:var(--mint)}
+#voces h2{color:var(--on-dark)}
 .voices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px}
-.voice{background:var(--card);border:2px solid var(--ink);padding:24px}
+.voice{background:var(--card);color:var(--ink);border:2px solid var(--ink);padding:24px;--focus:var(--mint-ink)}
 .voice header{display:flex;gap:14px;align-items:center;margin-bottom:18px}
 .avatar{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font:400 1.4rem var(--display);background:var(--teal);color:var(--mint);flex:none}
 .voice:nth-child(2) .avatar{background:var(--sun);color:var(--deep)}
@@ -245,6 +248,7 @@ h3{font:700 1.15rem/1.25 var(--ui);margin:0 0 10px}
 @supports ((-webkit-background-clip:text) or (background-clip:text)){
   h2{background:linear-gradient(100deg,#07543f,#175477);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
   .teal h2,.deep h2,:root[data-theme="dark"] .light h2{background-image:linear-gradient(100deg,var(--mint),var(--sun))}
+  #voces h2{background-image:linear-gradient(100deg,var(--mint),var(--sun))}
   .col h3{background:linear-gradient(100deg,var(--sun),var(--mint));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 }
 
@@ -264,6 +268,7 @@ table.log tbody tr:hover{background:var(--hover-surface)}
 .ty.a{background:#dcece6;color:#20483b}
 
 /* ---------- mitos ---------- */
+#mitos{background:linear-gradient(rgba(3,31,33,.6),rgba(3,31,33,.72)),url("mapa-huila.jpg") center/cover no-repeat}
 .myth{border-top:1px solid var(--line-dark)}
 .myth:last-child{border-bottom:1px solid var(--line-dark)}
 .myth-q{display:flex;gap:18px;align-items:center;justify-content:space-between;padding:22px 0}
@@ -436,6 +441,8 @@ input[aria-invalid="true"]{border-color:var(--coral-ink)}
   section{scroll-margin-top:110px}
 }
 @media (max-width:640px){
+  #voces{background-image:linear-gradient(180deg,rgba(3,31,33,.68) 0,rgba(3,31,33,.68) 120px,var(--deep) 255px),url("represa-huila.jpg");background-size:100% 100%,100% auto;background-position:center,center top;background-repeat:no-repeat;background-color:var(--deep)}
+  #mitos{background-image:linear-gradient(180deg,rgba(3,31,33,.6) 0,rgba(3,31,33,.68) 120px,var(--deep) 255px),url("mapa-huila.jpg");background-size:100% 100%,100% auto;background-position:center,center top;background-repeat:no-repeat;background-color:var(--deep)}
   .bar-row{grid-template-columns:minmax(0,1fr)}
   .bar-val{text-align:left}
   .axis{margin:6px 0 0}
