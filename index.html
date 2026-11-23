@@ -95,6 +95,7 @@ h3{font:700 1.15rem/1.25 var(--ui);margin:0 0 10px}
 .hero-in{position:relative}
 .mast-top{display:flex;flex-wrap:wrap;gap:8px 28px;justify-content:space-between;font:700 .75rem var(--ui);letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-soft);border-bottom:2px solid var(--on-dark);padding-bottom:12px;margin-bottom:clamp(28px,4vw,52px)}
 .mast-top b{color:var(--sun)}
+.university-logo{display:block;width:clamp(148px,16vw,190px);max-width:100%;height:auto;margin-left:auto;object-fit:contain;filter:drop-shadow(0 0 2px rgba(238,246,242,.48)) drop-shadow(0 5px 12px rgba(0,0,0,.2))}
 .theme-control{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin:-12px 0 24px;color:var(--on-dark-soft);font:700 .72rem var(--ui);letter-spacing:.1em;text-transform:uppercase}
 .theme-toggle{position:relative;display:flex;align-items:center;justify-content:space-around;width:76px;height:38px;padding:4px;border:1px solid rgba(167,216,244,.5);border-radius:99px;background:rgba(3,31,33,.8);color:var(--on-dark-soft);cursor:pointer}
 .theme-toggle::before{content:"";position:absolute;left:4px;top:4px;width:28px;height:28px;border-radius:50%;background:var(--mint);transition:transform .25s ease}
@@ -470,6 +471,7 @@ input[aria-invalid="true"]{border-color:var(--coral-ink)}
 }
 @media (max-width:640px){
   #voces{background-image:linear-gradient(180deg,rgba(3,31,33,.68) 0,rgba(3,31,33,.68) 120px,var(--deep) 255px),url("represa-huila.jpg");background-size:100% 100%,100% auto;background-position:center,center top;background-repeat:no-repeat;background-color:var(--deep)}
+  .university-logo{width:clamp(148px,40vw,180px);margin:8px 0 0 auto}
   .bar-row{grid-template-columns:minmax(0,1fr)}
   .bar-val{text-align:left}
   .axis{margin:6px 0 0}
@@ -549,6 +551,7 @@ input[aria-invalid="true"]{border-color:var(--coral-ink)}
       <span><b>Edición N.º 01</b></span>
       <span>Ecología · Ingeniería de Software · Universidad Surcolombiana</span>
       <span>Neiva, Huila</span>
+      <img class="university-logo" src="logo-universidad-surcolombiana.png" alt="Universidad Surcolombiana">
     </div>
     <div class="theme-control">
       <span id="theme-label">Modo oscuro</span>
