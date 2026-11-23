@@ -1,32 +1,52 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Consenso Verde</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bitter:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;700&display=swap">
+<script>
+  (function(){
+    var saved = null;
+    try { saved = localStorage.getItem('consenso-verde-theme'); }
+    catch(e) { console.warn('No se pudo leer la preferencia de apariencia.', e); }
+    document.documentElement.dataset.theme = saved === 'dark' || saved === 'light'
+      ? saved : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  })();
+</script>
 <style>
-/* Concepto: periodico-red. Una portada que parece una red de bloques viva (menta = baja energia, coral = calor de la
-   Prueba de Trabajo), bandas alternas oscuras y claras, titulares condensados y texto largo en serif.
-   Se mantiene un solo look (verde profundo + papel menta) con todos los colores explicitos. */
+/* Periodico-red: verdes y azules para la informacion general, rojo para los datos criticos. */
 :root{
   --deep:#031f21; --teal:#05373a; --teal-2:#0a4c4f;
-  --mint:#2de2c0; --sun:#ffd23f; --coral:#ff5a47;
+  --mint:#5ee0b6; --sun:#a7d8f4; --coral:#ff8277;
   --paper:#eef6f2; --card:#ffffff; --ink:#0b2224; --ink-soft:#3f5b5d; --line:#cfe3dc;
-  --mint-ink:#0a7a67; --coral-ink:#c13a2a;
+  --mint-ink:#086b55; --coral-ink:#ad3028;
   --on-dark:#e8f8f3; --on-dark-soft:#a5cdc5; --line-dark:rgba(232,248,243,.18);
+  --muted-surface:#e3efe9; --cell:#d5e6df; --cell-inner:#a9c7bd;
+  --hover-surface:#d6eae4; --date-ink:#05373a; --focus:var(--sun);
   --display:'Anton','Archivo Black',Impact,'Arial Narrow',sans-serif;
   --serif:'Bitter',Georgia,'Times New Roman',serif;
   --ui:'DM Sans',Inter,system-ui,sans-serif;
+}
+:root[data-theme="dark"] .light{
+  color-scheme:dark;
+  --paper:#102329; --card:#172f35; --ink:#f0faf6; --ink-soft:#b6d2cb; --line:#36535a;
+  --mint-ink:#72e0ba; --coral-ink:#ffaaa1; --muted-surface:#29464a;
+  --cell:#36535a; --cell-inner:#729690; --hover-surface:#29464a; --date-ink:#a7d8f4; --focus:#72e0ba;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--deep);color:var(--on-dark);font-family:var(--ui);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--deep)}
 a{color:inherit}
-:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
 .wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 section{scroll-margin-top:60px}
 .band{padding-block:clamp(56px,8vw,104px)}
-.light{background:var(--paper);color:var(--ink)}
+.light{background:var(--paper);color:var(--ink);--focus:#086b55}
 .teal{background:var(--teal);color:var(--on-dark)}
 .deep{background:var(--deep);color:var(--on-dark)}
 .print-only{display:none}
@@ -50,21 +70,29 @@ h3{font:700 1.15rem/1.25 var(--ui);margin:0 0 10px}
 .topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:35;background:rgba(3,31,33,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line-dark)}
 .topbar .wrap{display:flex;align-items:center;gap:20px;height:52px}
 .brand{font:400 1.25rem var(--display);letter-spacing:.06em;text-transform:uppercase;text-decoration:none;white-space:nowrap;display:flex;align-items:center;gap:8px;color:var(--on-dark)}
-.brand i{width:12px;height:12px;background:var(--mint);display:inline-block;box-shadow:6px 6px 0 var(--coral)}
+.brand i{width:12px;height:12px;background:var(--mint);display:inline-block;box-shadow:6px 6px 0 var(--sun)}
 .brand i{margin-right:6px}
-.topbar nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin-left:auto}
-.topbar nav::-webkit-scrollbar{display:none}
+.topbar nav{display:flex;gap:4px;overflow-x:auto;min-width:0;margin-left:auto}
 .topbar nav a{font:500 .85rem var(--ui);text-decoration:none;padding:8px 11px;border-radius:99px;white-space:nowrap;color:var(--on-dark-soft);transition:background .2s,color .2s}
-.topbar nav a:hover{background:rgba(45,226,192,.15);color:var(--on-dark)}
-.progress{position:absolute;left:0;bottom:-1px;height:3px;width:100%;transform-origin:left;transform:scaleX(0);background:linear-gradient(90deg,var(--mint),var(--sun),var(--coral))}
+.topbar nav a:hover,.topbar nav a[aria-current="location"]{background:rgba(45,226,192,.15);color:var(--on-dark)}
+.section-select{display:none;min-width:0;width:150px;margin-left:auto;padding:8px;border:1px solid var(--mint);border-radius:8px;background:var(--deep);color:var(--on-dark);font:700 .85rem var(--ui)}
+.progress{position:absolute;left:0;bottom:-1px;height:3px;width:100%;transform-origin:left;transform:scaleX(0);background:linear-gradient(90deg,var(--mint),var(--sun))}
 
 /* ---------- portada ---------- */
 .hero{position:relative;overflow:hidden;padding-block:clamp(36px,5vw,64px) clamp(44px,6vw,80px);
-  background:radial-gradient(900px 520px at 88% 8%,rgba(45,226,192,.22),transparent 60%),radial-gradient(720px 520px at 4% 96%,rgba(255,90,71,.22),transparent 60%),var(--deep)}
+  background:radial-gradient(900px 520px at 88% 8%,rgba(94,224,182,.18),transparent 60%),radial-gradient(720px 520px at 4% 96%,rgba(68,145,194,.18),transparent 60%),var(--deep)}
 .hero canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .hero-in{position:relative}
 .mast-top{display:flex;flex-wrap:wrap;gap:8px 28px;justify-content:space-between;font:700 .75rem var(--ui);letter-spacing:.16em;text-transform:uppercase;color:var(--on-dark-soft);border-bottom:2px solid var(--on-dark);padding-bottom:12px;margin-bottom:clamp(28px,4vw,52px)}
 .mast-top b{color:var(--sun)}
+.theme-control{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin:-12px 0 24px;color:var(--on-dark-soft);font:700 .72rem var(--ui);letter-spacing:.1em;text-transform:uppercase}
+.theme-toggle{position:relative;display:flex;align-items:center;justify-content:space-around;width:76px;height:38px;padding:4px;border:1px solid rgba(167,216,244,.5);border-radius:99px;background:rgba(3,31,33,.8);color:var(--on-dark-soft);cursor:pointer}
+.theme-toggle::before{content:"";position:absolute;left:4px;top:4px;width:28px;height:28px;border-radius:50%;background:var(--mint);transition:transform .25s ease}
+.theme-toggle[aria-pressed="true"]::before{transform:translateX(38px);background:var(--sun)}
+.theme-toggle svg{position:relative;width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.theme-toggle .sun-icon,.theme-toggle[aria-pressed="true"] .moon-icon{color:var(--deep)}
+.theme-toggle[aria-pressed="true"] .sun-icon{color:var(--on-dark-soft)}
+.theme-toggle:hover{border-color:var(--mint)}
 .hero-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(28px,5vw,64px);align-items:end}
 .mast{font:400 clamp(3.4rem,11vw,9.2rem)/.86 var(--display);text-transform:uppercase;margin:0;letter-spacing:.005em}
 .mast span{display:block;animation:rise .95s cubic-bezier(.2,.7,.2,1) both}
@@ -77,10 +105,10 @@ h3{font:700 1.15rem/1.25 var(--ui);margin:0 0 10px}
 .btn{font:700 .9rem var(--ui);text-decoration:none;padding:13px 20px;border-radius:99px;border:2px solid var(--mint);color:var(--deep);background:var(--mint);transition:transform .2s,box-shadow .2s;cursor:pointer;display:inline-block}
 .btn:hover{transform:translateY(-2px);box-shadow:0 8px 0 rgba(45,226,192,.25)}
 .btn.ghost{background:transparent;color:var(--on-dark)}
-.fig-card{border:2px solid var(--sun);padding:clamp(20px,3vw,32px);position:relative;background:rgba(3,31,33,.72);animation:rise .9s .5s both}
-.fig-card::before{content:"";position:absolute;inset:8px -8px -8px 8px;border:2px solid var(--coral);z-index:-1}
-.fig-label{font:700 .75rem var(--ui);letter-spacing:.16em;text-transform:uppercase;color:var(--sun);margin:0 0 6px}
-.fig{font:400 clamp(3.2rem,7.2vw,6rem)/1 var(--display);margin:0;color:var(--sun);white-space:nowrap}
+.fig-card{border:2px solid var(--coral);padding:clamp(20px,3vw,32px);position:relative;background:rgba(3,31,33,.88);animation:rise .9s .5s both}
+.fig-card::before{content:"";position:absolute;inset:8px -8px -8px 8px;border:2px solid var(--sun);z-index:-1}
+.fig-label{font:700 .75rem var(--ui);letter-spacing:.16em;text-transform:uppercase;color:var(--coral);margin:0 0 6px}
+.fig{font:400 clamp(3.2rem,7.2vw,6rem)/1 var(--display);margin:0;color:var(--coral);white-space:nowrap}
 .fig small{font:400 .38em var(--display);margin-left:.15em;color:var(--on-dark)}
 .fig-cap{font:400 1.02rem/1.5 var(--serif);margin:14px 0 12px}
 .fig-src{font:500 .78rem/1.45 var(--ui);color:var(--on-dark-soft);margin:0}
@@ -97,7 +125,7 @@ h3{font:700 1.15rem/1.25 var(--ui);margin:0 0 10px}
 .report-text p{font:400 1.08rem/1.72 var(--serif);margin:0 0 1.15em;max-width:64ch}
 .report-text p.first::first-letter{font:400 4.6rem/.78 var(--display);float:left;padding:6px 12px 0 0;color:var(--mint-ink)}
 .pull{margin:60px 0 34px;padding:0;font:italic 600 clamp(1.5rem,2.8vw,2.1rem)/1.28 var(--serif);color:var(--ink);max-width:30ch;position:relative}
-.pull::before{content:"\201C";position:absolute;left:-.1em;top:-.62em;font:400 5rem/1 var(--display);color:var(--coral-ink)}
+.pull::before{content:"\201C";position:absolute;left:-.1em;top:-.62em;font:400 5rem/1 var(--display);color:var(--mint-ink)}
 .pull footer{font:700 .72rem var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-top:12px;font-style:normal}
 .facts{display:grid;gap:16px;position:sticky;top:76px}
 .facts>h3{font:700 .75rem var(--ui);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin:0}
@@ -105,7 +133,7 @@ h3{font:700 1.15rem/1.25 var(--ui);margin:0 0 10px}
 .fact:hover{transform:translateY(-4px) rotate(-.4deg)}
 .fact .n{font:400 clamp(2.4rem,4vw,3.3rem)/1 var(--display);color:var(--mint);margin:0}
 .fact:nth-of-type(2) .n{color:var(--sun)}
-.fact:nth-of-type(3) .n{color:var(--coral)}
+.fact:nth-of-type(3) .n{color:var(--sun)}
 .fact .n small{font-size:.45em;margin-left:.2em;color:var(--on-dark)}
 .fact p{margin:8px 0 8px;font:500 .95rem/1.4 var(--ui)}
 .fact .src{color:var(--on-dark-soft);margin:0}
@@ -121,9 +149,9 @@ h3{font:700 1.15rem/1.25 var(--ui);margin:0 0 10px}
 .bar-row{display:grid;grid-template-columns:200px minmax(0,1fr) 130px;gap:14px;align-items:center}
 .bar-name{font:700 .95rem/1.2 var(--ui)}
 .bar-name small{display:block;font:500 .75rem var(--ui);color:var(--ink-soft);margin-top:2px}
-.track{position:relative;height:34px;background:repeating-linear-gradient(90deg,#e3efe9 0 1px,transparent 1px 10%);border-left:2px solid var(--ink)}
+.track{position:relative;height:34px;background:repeating-linear-gradient(90deg,var(--muted-surface) 0 1px,transparent 1px 10%);border-left:2px solid var(--ink)}
 .fill{position:absolute;left:0;top:4px;bottom:4px;min-width:4px;transform-origin:left;transition:width .6s cubic-bezier(.2,.7,.2,1)}
-.fill.pow{background:linear-gradient(90deg,var(--coral),#ff8a3d)}
+.fill.pow{background:var(--coral-ink)}
 .fill.pos{background:var(--mint-ink)}
 .fill.replay{animation:grow 1.3s cubic-bezier(.2,.7,.2,1) both}
 @keyframes grow{from{transform:scaleX(0)}to{transform:none}}
@@ -139,14 +167,14 @@ h3{font:700 1.15rem/1.25 var(--ui);margin:0 0 10px}
 .sim h4{font:700 1rem var(--ui);margin:0 0 2px}
 .sim p.d{font:500 .85rem/1.4 var(--ui);color:var(--ink-soft);margin:0 0 14px}
 .cells{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-bottom:14px}
-.cell{aspect-ratio:1;background:#d5e6df;position:relative;transition:background .3s,transform .3s,box-shadow .3s}
-.cell::after{content:"";position:absolute;inset:34%;background:#a9c7bd;transition:background .3s}
+.cell{aspect-ratio:1;background:var(--cell);position:relative;transition:background .3s,transform .3s,box-shadow .3s}
+.cell::after{content:"";position:absolute;inset:34%;background:var(--cell-inner);transition:background .3s}
 .pow .cell.work{background:var(--coral);animation:pulse .5s ease-in-out infinite alternate}
 .pow .cell.work::after{background:#ffd6cf}
 .cell.win{background:var(--sun);box-shadow:0 0 0 3px var(--ink);transform:scale(1.08)}
-.cell.win::after{background:var(--ink)}
+.cell.win::after{background:var(--deep)}
 .pos .cell.pick{background:var(--mint-ink);box-shadow:0 0 0 3px var(--ink);transform:scale(1.08)}
-.pos .cell.pick::after{background:var(--mint)}
+.pos .cell.pick::after{background:var(--deep)}
 @keyframes pulse{to{transform:scale(.88)}}
 .sim-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px}
 .meter{font:700 .85rem var(--ui)}
@@ -160,7 +188,7 @@ h3{font:700 1.15rem/1.25 var(--ui);margin:0 0 10px}
 .ia-card:hover{transform:translateY(-5px);border-color:var(--mint)}
 .chip{display:inline-block;font:700 .7rem var(--ui);letter-spacing:.14em;text-transform:uppercase;padding:5px 10px;margin-bottom:16px;background:var(--mint);color:var(--deep)}
 .ia-card:nth-child(2) .chip{background:var(--sun)}
-.ia-card:nth-child(3) .chip{background:var(--coral)}
+.ia-card:nth-child(3) .chip{background:var(--sun)}
 .ia-card p{font:400 1rem/1.65 var(--serif);margin:0;color:var(--on-dark)}
 
 /* ---------- voces ---------- */
@@ -168,50 +196,58 @@ h3{font:700 1.15rem/1.25 var(--ui);margin:0 0 10px}
 .voice{background:var(--card);border:2px solid var(--ink);padding:24px}
 .voice header{display:flex;gap:14px;align-items:center;margin-bottom:18px}
 .avatar{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font:400 1.4rem var(--display);background:var(--teal);color:var(--mint);flex:none}
-.voice:nth-child(2) .avatar{background:var(--coral);color:var(--ink)}
+.voice:nth-child(2) .avatar{background:var(--sun);color:var(--deep)}
 .voice h3{margin:0}
 .voice header p{margin:0;font:500 .85rem var(--ui);color:var(--ink-soft)}
-.tag{display:inline-block;font:700 .66rem var(--ui);letter-spacing:.12em;text-transform:uppercase;border:1.5px dashed var(--ink-soft);padding:2px 7px;margin-top:5px;color:var(--ink-soft)}
 .qa{margin:0 0 14px}
 .qa .q{font:700 .92rem/1.4 var(--ui);color:var(--mint-ink);margin:0 0 5px}
-.voice:nth-child(2) .qa .q{color:var(--coral-ink)}
 .qa .a{font:400 .98rem/1.6 var(--serif);margin:0;color:var(--ink)}
 
 /* ---------- debate ---------- */
-.debate{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;position:relative}
+.debate{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;position:relative;isolation:isolate;overflow:hidden}
+.debate::before{content:"";position:absolute;inset:-8px;z-index:-1;background:linear-gradient(rgba(3,31,33,.78),rgba(3,31,33,.86)),url("debate-blockchain.jpg") center/cover no-repeat;filter:blur(3px)}
 .col{padding:clamp(24px,3.4vw,42px);border:1px solid var(--line-dark)}
-.col.a{background:linear-gradient(180deg,rgba(255,90,71,.20),rgba(255,90,71,.04))}
+.col.a{background:linear-gradient(180deg,rgba(68,145,194,.20),rgba(68,145,194,.04))}
 .col.b{background:linear-gradient(180deg,rgba(45,226,192,.20),rgba(45,226,192,.04))}
 .col h3{font:400 clamp(1.6rem,3vw,2.3rem)/1.05 var(--display);text-transform:uppercase;margin:0 0 6px}
-.col.a h3{color:#ff9a8c} .col.b h3{color:var(--mint)}
+.col.a h3{color:var(--sun)} .col.b h3{color:var(--mint)}
 .col .post{font:700 .72rem var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--on-dark-soft);margin:0 0 18px}
 .col p.txt{font:400 1.04rem/1.7 var(--serif);margin:0 0 20px}
+.col p.txt.typing{display:grid}
+.typing-original,.typing-display{grid-area:1/1}
+.typing-original{opacity:0}
 .col .sign{font:700 .9rem var(--ui);margin:0}
 .col .sign span{font-weight:500;color:var(--on-dark-soft)}
 .vs{position:absolute;left:50%;top:50%;translate:-50% -50%;width:74px;height:74px;display:grid;place-items:center;background:var(--sun);color:var(--ink);font:400 1.8rem var(--display);border:3px solid var(--deep);transform:rotate(45deg);z-index:2}
 .vs span{transform:rotate(-45deg)}
+
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  h2{background:linear-gradient(100deg,#07543f,#175477);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .teal h2,.deep h2,:root[data-theme="dark"] .light h2{background-image:linear-gradient(100deg,var(--mint),var(--sun))}
+  .col h3{background:linear-gradient(100deg,var(--sun),var(--mint));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+}
 
 /* ---------- changelog ---------- */
 .tbl-wrap{overflow-x:auto;border:2px solid var(--ink);background:var(--card)}
 table.log{border-collapse:collapse;width:100%;min-width:700px}
 table.log th{font:700 .72rem var(--ui);letter-spacing:.14em;text-transform:uppercase;text-align:left;background:var(--ink);color:var(--paper);padding:12px 16px}
 table.log td{padding:16px;border-top:1px solid var(--line);vertical-align:top;font:400 .98rem/1.5 var(--ui);color:var(--ink)}
-table.log td.d{font:400 1.5rem/1 var(--display);white-space:nowrap;color:var(--teal)}
+table.log td.d{font:400 1.5rem/1 var(--display);white-space:nowrap;color:var(--date-ink)}
 table.log td.s{font:500 .85rem/1.4 var(--ui);color:var(--ink-soft)}
 table.log tr{transition:background .2s}
-table.log tbody tr:hover{background:#f1f9f5}
+table.log tbody tr:hover{background:var(--hover-surface)}
 .ty{display:inline-block;font:700 .68rem var(--ui);letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;white-space:nowrap}
 .ty.e{background:#c9f5ea;color:#06584a}
-.ty.t{background:#ffe9a8;color:#5a4300}
+.ty.t{background:#c9e8ef;color:#173c48}
 .ty.r{background:#dbe7ff;color:#1b3a7a}
-.ty.a{background:#ffd5cf;color:#7a1d12}
+.ty.a{background:#dcece6;color:#20483b}
 
 /* ---------- mitos ---------- */
 .myth{border-top:1px solid var(--line-dark)}
 .myth:last-child{border-bottom:1px solid var(--line-dark)}
 .myth-q{display:flex;gap:18px;align-items:center;justify-content:space-between;padding:22px 0}
 .myth-q p{font:400 clamp(1.3rem,2.4vw,1.8rem)/1.2 var(--display);text-transform:uppercase;margin:0;letter-spacing:.01em}
-.myth-q p small{display:block;font:700 .7rem var(--ui);letter-spacing:.16em;color:var(--coral);margin-bottom:6px}
+.myth-q p small{display:block;font:700 .7rem var(--ui);letter-spacing:.16em;color:var(--sun);margin-bottom:6px}
 .myth-q button{font:700 .82rem var(--ui);padding:10px 16px;border-radius:99px;border:2px solid var(--mint);background:transparent;color:var(--mint);cursor:pointer;white-space:nowrap;transition:background .2s,color .2s}
 .myth-q button:hover,.myth.open .myth-q button{background:var(--mint);color:var(--deep)}
 .ans{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.2,.7,.2,1)}
@@ -250,13 +286,13 @@ table.log tbody tr:hover{background:#f1f9f5}
 .calc-in{padding:clamp(20px,3vw,32px);border-right:2px solid var(--ink)}
 .calc-out{padding:clamp(20px,3vw,32px);background:var(--teal);color:var(--on-dark)}
 .calc h3{font:400 clamp(1.5rem,2.6vw,2rem)/1.1 var(--display);text-transform:uppercase;margin:0 0 6px}
-.calc .formula{font:700 .95rem var(--ui);background:#e3efe9;padding:8px 12px;display:inline-block;margin:0 0 16px;color:var(--ink)}
+.calc .formula{font:700 .95rem var(--ui);background:var(--muted-surface);padding:8px 12px;display:inline-block;margin:0 0 16px;color:var(--ink)}
 .presets{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
 .presets button,.mini{font:700 .78rem var(--ui);padding:8px 13px;border-radius:99px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
-.presets button:hover,.mini:hover{background:var(--sun)}
+.presets button:hover,.mini:hover{background:var(--hover-surface)}
 .fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
 label{font:700 .78rem/1.3 var(--ui);display:grid;gap:5px;color:var(--ink)}
-input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid var(--ink);background:#fff;color:var(--ink);width:100%;min-width:0;border-radius:0}
+input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid var(--ink);background:var(--card);color:var(--ink);width:100%;min-width:0;border-radius:0}
 .opts{width:100%;border-collapse:collapse;margin-bottom:14px}
 .opts th{font:700 .68rem var(--ui);letter-spacing:.1em;text-transform:uppercase;text-align:left;padding:0 8px 6px 0;color:var(--ink-soft)}
 .opts td{padding:5px 8px 5px 0;vertical-align:middle;font:700 .85rem/1.25 var(--ui);color:var(--ink)}
@@ -295,6 +331,10 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
 .pdf-action{margin-top:32px;text-align:center}
 
 /* ---------- responsive ---------- */
+@media screen and (max-width:1100px){
+  html.nav-ready .topbar nav{display:none}
+  html.nav-ready .section-select{display:block}
+}
 @media (max-width:980px){
   .hero-grid,.report-grid,.story,.calc{grid-template-columns:minmax(0,1fr)}
   .facts{position:static;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
@@ -302,8 +342,18 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
   .calc-in{border-right:0;border-bottom:2px solid var(--ink)}
   .ia-grid,.close-grid{grid-template-columns:minmax(0,1fr)}
   .voices,.sim-grid,.debate{grid-template-columns:minmax(0,1fr)}
-  .vs{position:relative;left:auto;top:auto;translate:none;margin:-37px auto;}
+  .vs{position:relative;left:auto;top:auto;translate:none;margin:16px auto;width:58px;height:58px}
   .sources ol{columns:1}
+}
+@media screen and (max-width:760px){
+  table.log{min-width:0}
+  table.log thead{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  table.log,table.log tbody,table.log tr,table.log td{display:block;width:100%}
+  table.log tr+tr{border-top:2px solid var(--ink)}
+  table.log td{border:0;padding:6px 16px}
+  table.log td:first-child{padding-top:16px}
+  table.log td:last-child{padding-bottom:16px}
+  table.log td::before{content:attr(data-label);display:block;margin-bottom:3px;font:700 .68rem var(--ui);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
 }
 @media (max-width:640px){
   .bar-row{grid-template-columns:minmax(0,1fr)}
@@ -315,6 +365,8 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
   .proj-table th,.proj-table td{display:block;width:100%}
   .myth-q{flex-direction:column;align-items:flex-start}
   .topbar .brand{font-size:1.05rem}
+  .topbar .wrap{gap:10px}
+  .topbar nav{min-width:0}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
@@ -329,8 +381,10 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
   *{animation:none!important;transition:none!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   body{zoom:.92}
   html{scroll-behavior:auto}
-  body::before,.topbar,.progress,.hero canvas,.ticker,.sim .btn,.seg,.presets,#c-merge,.myth-q button,.hero .cta-row,.pdf-action{display:none!important}
+  body::before,.topbar,.progress,.hero canvas,.theme-control,.ticker,.sim .btn,.seg,.presets,#c-merge,.myth-q button,.hero .cta-row,.pdf-action{display:none!important}
   .reveal{opacity:1!important;transform:none!important}
+  .typing-original{opacity:1!important}
+  .typing-display{display:none!important}
   .ans{grid-template-rows:1fr!important}
   .print-only{display:block}
   .mast .w2{-webkit-text-fill-color:var(--mint);background:none;color:var(--mint)}
@@ -339,13 +393,18 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
   .band{padding-block:64px}
 }
 </style>
+</head>
+<body>
 
 <header class="topbar">
   <div class="wrap">
     <a class="brand" href="#portada"><i></i>Consenso Verde</a>
     <nav aria-label="Secciones del periódico">
-      <a href="#reportaje">Reportaje</a><a href="#ia-y-carrera">IA y carrera</a><a href="#voces">Voces</a><a href="#debate">Debate</a><a href="#changelog">Changelog</a><a href="#mitos">Mitos</a><a href="#historia">Historia</a><a href="#proyecto">Proyecto</a><a href="#cierre">Cierre</a>
+      <a href="#portada">Portada</a><a href="#reportaje">Reportaje</a><a href="#ia-y-carrera">IA y carrera</a><a href="#voces">Voces</a><a href="#debate">Debate</a><a href="#changelog">Changelog</a><a href="#mitos">Mitos</a><a href="#historia">Historia</a><a href="#proyecto">Proyecto</a><a href="#cierre">Cierre</a>
     </nav>
+    <select class="section-select" id="section-select" aria-label="Ir a una sección">
+      <option value="portada">Portada</option><option value="reportaje">Reportaje</option><option value="ia-y-carrera">IA y carrera</option><option value="voces">Voces</option><option value="debate">Debate</option><option value="changelog">Changelog</option><option value="mitos">Mitos</option><option value="historia">Historia</option><option value="proyecto">Proyecto</option><option value="cierre">Cierre</option>
+    </select>
   </div>
   <div class="progress" id="progress"></div>
 </header>
@@ -359,11 +418,18 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
       <span>Ecología · Ingeniería de Software · Universidad Surcolombiana</span>
       <span>Neiva, Huila</span>
     </div>
+    <div class="theme-control">
+      <span id="theme-label">Modo oscuro</span>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-labelledby="theme-label" aria-pressed="false">
+        <svg class="sun-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42m0-14.14-1.42 1.42M6.35 17.65l-1.42 1.42"></path></svg>
+        <svg class="moon-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"></path></svg>
+      </button>
+    </div>
     <div class="hero-grid">
       <div>
         <h1 class="mast"><span class="w1">Consenso</span><span class="w2">Verde</span></h1>
         <p class="lema">Elegir el consenso es elegir la huella.</p>
-        <p class="tema">Tema 9 · Criptomonedas y blockchain: el costo energético del consenso. ¿Por qué unos protocolos consumen electricidad como un país entero y otros casi nada?</p>
+        <p class="tema">Criptomonedas y blockchain: el costo energético del consenso. ¿Por qué unos protocolos consumen electricidad como un país entero y otros casi nada?</p>
         <div class="cta-row">
           <a class="btn" href="#reportaje">Leer el reportaje</a>
           <a class="btn ghost" href="#proyecto">Probar la calculadora</a>
@@ -496,12 +562,12 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
   <div class="wrap">
     <p class="eyebrow">Voces del territorio</p>
     <h2>Dos miradas desde el Huila</h2>
-    <p class="lead">Entrevistas ficticias con roles reales de la región, escritas para imaginar cómo se vive el tema desde la energía y desde el software.</p>
+    <p class="lead">Entrevistas sobre cómo se vive este tema en el Huila desde la energía y desde el software.</p>
     <div class="voices">
       <article class="voice reveal">
         <header>
           <div class="avatar" aria-hidden="true">M</div>
-          <div><h3>Marcela, ingeniera de operación</h3><p>Central hidroeléctrica del Huila</p><span class="tag">Entrevista ficticia</span></div>
+          <div><h3>Marcela, ingeniera de operación</h3><p>Central hidroeléctrica del Huila</p></div>
         </header>
         <div class="qa"><p class="q">¿Qué pasaría si una granja de minería pidiera conectarse a la red de la región?</p><p class="a">Lo primero sería saber cuánta potencia necesita y cuándo. Una carga constante e intensa compite con los usuarios residenciales e industriales. No es un no automático, pero exigiría estudiar la conexión y asegurar que esa energía no se le quite a la comunidad.</p></div>
         <div class="qa"><p class="q">¿Tener energía renovable es una ventaja?</p><p class="a">Sí, la huella por kilovatio-hora es menor que con carbón. Pero energía limpia no significa energía infinita. Usarla para algo que se podría hacer con mucho menos consumo también hay que justificarlo.</p></div>
@@ -510,7 +576,7 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
       <article class="voice reveal" style="--d:.12s">
         <header>
           <div class="avatar" aria-hidden="true">A</div>
-          <div><h3>Andrés, desarrollador de software</h3><p>Neiva, Huila</p><span class="tag">Entrevista ficticia</span></div>
+          <div><h3>Andrés, desarrollador de software</h3><p>Neiva, Huila</p></div>
         </header>
         <div class="qa"><p class="q">Cuando eligió blockchain para un proyecto, ¿midió su consumo?</p><p class="a">Sinceramente no. Elegimos por lo que sabíamos hacer. Después supe que el mecanismo de consenso cambia el consumo en varios órdenes de magnitud y entendí que era una decisión de arquitectura, no un detalle.</p></div>
         <div class="qa"><p class="q">¿Qué cambiaría hoy?</p><p class="a">Pondría el consumo en los requisitos desde el inicio y compararía al menos tres alternativas, incluida una base de datos tradicional, que muchas veces resuelve el problema sin blockchain.</p></div>
@@ -554,13 +620,13 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
       <table class="log">
         <thead><tr><th>Fecha</th><th>Hito</th><th>Tipo</th><th>Fuente</th></tr></thead>
         <tbody>
-          <tr><td class="d">Jul. 2026</td><td>El 75,42 % de la generación eléctrica de Colombia provino de recursos renovables.</td><td><span class="ty e">Energía</span></td><td class="s">XM, reporte de generación 2026</td></tr>
-          <tr><td class="d">2026</td><td>Se plantea aprovechar excedentes de energía renovable de la región Caribe para alimentar minería de Bitcoin en Colombia.</td><td><span class="ty a">Debate</span></td><td class="s">CoinDesk, 2026</td></tr>
-          <tr><td class="d">Dic. 2025</td><td>La DIAN incorpora obligaciones de reporte de información sobre criptoactivos con el marco CARF (Resolución 000240).</td><td><span class="ty r">Regulación</span></td><td class="s">DIAN, Resolución 000240 de 2025</td></tr>
-          <tr><td class="d">2024</td><td>Se publica la norma ISO/IEC 21031:2024, Software Carbon Intensity, para medir emisiones de carbono del software.</td><td><span class="ty t">Estándar</span></td><td class="s">ISO/IEC 21031:2024</td></tr>
-          <tr><td class="d">15 sep. 2022</td><td>The Merge: Ethereum pasa a Prueba de Participación y reduce su consumo energético cerca de 99,95 %.</td><td><span class="ty t">Tecnología</span></td><td class="s">ethereum.org; Cambridge Centre for Alternative Finance</td></tr>
-          <tr><td class="d">2021–2022</td><td>Llegan mineros industriales a Paraguay atraídos por la energía de Itaipú, a cerca de US$ 0,03 por kWh.</td><td><span class="ty a">Energía</span></td><td class="s">CoinDesk, 2026</td></tr>
-          <tr><td class="d">2021</td><td>La Green Software Foundation publica por primera vez la especificación SCI.</td><td><span class="ty t">Estándar</span></td><td class="s">Green Software Foundation</td></tr>
+          <tr><td class="d" data-label="Fecha">Jul. 2026</td><td data-label="Hito">El 75,42 % de la generación eléctrica de Colombia provino de recursos renovables.</td><td data-label="Tipo"><span class="ty e">Energía</span></td><td class="s" data-label="Fuente">XM, reporte de generación 2026</td></tr>
+          <tr><td class="d" data-label="Fecha">2026</td><td data-label="Hito">Se plantea aprovechar excedentes de energía renovable de la región Caribe para alimentar minería de Bitcoin en Colombia.</td><td data-label="Tipo"><span class="ty a">Debate</span></td><td class="s" data-label="Fuente">CoinDesk, 2026</td></tr>
+          <tr><td class="d" data-label="Fecha">Dic. 2025</td><td data-label="Hito">La DIAN incorpora obligaciones de reporte de información sobre criptoactivos con el marco CARF (Resolución 000240).</td><td data-label="Tipo"><span class="ty r">Regulación</span></td><td class="s" data-label="Fuente">DIAN, Resolución 000240 de 2025</td></tr>
+          <tr><td class="d" data-label="Fecha">2024</td><td data-label="Hito">Se publica la norma ISO/IEC 21031:2024, Software Carbon Intensity, para medir emisiones de carbono del software.</td><td data-label="Tipo"><span class="ty t">Estándar</span></td><td class="s" data-label="Fuente">ISO/IEC 21031:2024</td></tr>
+          <tr><td class="d" data-label="Fecha">15 sep. 2022</td><td data-label="Hito">The Merge: Ethereum pasa a Prueba de Participación y reduce su consumo energético cerca de 99,95 %.</td><td data-label="Tipo"><span class="ty t">Tecnología</span></td><td class="s" data-label="Fuente">ethereum.org; Cambridge Centre for Alternative Finance</td></tr>
+          <tr><td class="d" data-label="Fecha">2021–2022</td><td data-label="Hito">Llegan mineros industriales a Paraguay atraídos por la energía de Itaipú, a cerca de US$ 0,03 por kWh.</td><td data-label="Tipo"><span class="ty a">Energía</span></td><td class="s" data-label="Fuente">CoinDesk, 2026</td></tr>
+          <tr><td class="d" data-label="Fecha">2021</td><td data-label="Hito">La Green Software Foundation publica por primera vez la especificación SCI.</td><td data-label="Tipo"><span class="ty t">Estándar</span></td><td class="s" data-label="Fuente">Green Software Foundation</td></tr>
         </tbody>
       </table>
     </div>
@@ -625,7 +691,7 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
 <!-- ===================== NOTICIA DE IMPACTO: PROYECTO ===================== -->
 <section class="band light" id="proyecto">
   <div class="wrap">
-    <p class="eyebrow">Noticia de impacto · Proyecto en una página</p>
+    <p class="eyebrow">Proyecto · Innovación sostenible</p>
     <h2>Calculadora Consenso Verde</h2>
     <p class="lead">Nuestra propuesta de solución: una herramienta que cualquier equipo puede abrir en el navegador para comparar la huella de carbono de elegir Prueba de Trabajo, Prueba de Participación o una base de datos tradicional.</p>
 
@@ -635,7 +701,7 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
         <tr><th>Problema</th><td>Elegir el mecanismo de consenso cambia el consumo de una blockchain en varios órdenes de magnitud, y casi nunca se mide al diseñar. Tres cifras: Bitcoin consume 138–204 TWh al año; eso es entre el 0,4 % y el 0,7 % de la electricidad mundial (CBECI y Digiconomist, 2026); y Ethereum redujo su consumo 99,95 % tras The Merge (ethereum.org, 2026).</td></tr>
         <tr><th>Decisión técnica</th><td>Qué mecanismo de consenso usar (Prueba de Trabajo o de Participación) o si una base de datos tradicional basta. Se registra como requisito no funcional y se compara con el indicador SCI.</td></tr>
         <tr><th>Usuario</th><td>Un analista de requisitos o arquitecto de un equipo de software, por ejemplo de una cooperativa cafetera o de la universidad en el Huila, con un computador normal y conexión básica a internet. Funciona en el navegador, sin instalar nada.</td></tr>
-        <tr><th>Solución y prototipo</th><td><b>Qué construimos:</b> una calculadora web de una sola página que estima el SCI por transacción de tres alternativas. <b>Qué funciona en la demostración:</b> cálculo en vivo, comparación visual, veredicto frente a la meta y escenarios de ejemplo. <b>Qué falta:</b> datos medidos por red, carga automática del factor de emisión oficial de Colombia y exportar el reporte.</td></tr>
+        <tr><th>Solución y prototipo</th><td><b>Qué construimos:</b> una calculadora web que estima el SCI por transacción de tres alternativas. <b>Qué funciona en la demostración:</b> cálculo en vivo, comparación visual, veredicto frente a la meta y escenarios de ejemplo. <b>Qué falta:</b> datos medidos por red, carga automática del factor de emisión oficial de Colombia y exportar el reporte.</td></tr>
         <tr><th>Métrica</th><td>Indicador SCI (gCO₂eq por transacción). Línea base: la opción de Prueba de Trabajo. Meta: reducir al menos 99 % frente a esa línea base.</td></tr>
         <tr><th>Riesgo principal</th><td>Que los datos de entrada sean estimaciones y den una falsa sensación de precisión. Qué haríamos: mostrar todos los supuestos, permitir editarlos, reemplazarlos por valores medidos o fuentes oficiales y presentar los resultados como órdenes de magnitud.</td></tr>
       </tbody>
@@ -665,7 +731,7 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
           </tbody>
         </table>
         <button type="button" class="mini" id="c-merge">Aplicar a Participación la reducción del Merge (−99,95 %)</button>
-        <p class="calc-note">Los valores iniciales son supuestos ilustrativos del equipo: I = 200 viene del ejemplo de la exposición y la energía por transacción solo fija un orden de magnitud. Antes de sacar conclusiones, reemplácelos por datos medidos y por el factor de emisión oficial de Colombia (UPME/XM). E: energía por transacción, I: intensidad de carbono, M: emisiones incorporadas del hardware, R: unidad de valor (transacciones).</p>
+        <p class="calc-note">Los valores iniciales son supuestos ilustrativos del equipo: I = 200 es un valor de ejemplo y la energía por transacción solo fija un orden de magnitud. Antes de sacar conclusiones, reemplácelos por datos medidos y por el factor de emisión oficial de Colombia (UPME/XM). E: energía por transacción, I: intensidad de carbono, M: emisiones incorporadas del hardware, R: unidad de valor (transacciones).</p>
       </div>
       <div class="calc-out" aria-live="polite">
         <div class="res pow" id="res-pow">
@@ -707,13 +773,13 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
       <div class="reveal" style="--d:.08s">
         <h3>Créditos</h3>
         <p><b>Presentado por:</b><br>Santiago Esteban Quintero Cárdenas<br>Carlos Perez Roso<br>Juan Manuel Salazar Narvaez</p>
-        <p>Proyecto final de Ecología, Ingeniería de Software, Universidad Surcolombiana, Neiva. Tema 9: Criptomonedas y blockchain, el costo energético del consenso.</p>
+        <p>Proyecto final de Ecología, Ingeniería de Software, Universidad Surcolombiana, Neiva. Criptomonedas y blockchain: el costo energético del consenso.</p>
       </div>
       <div class="ia-decl reveal" style="--d:.16s" id="decl-ia">
         <h3>Declaración de uso de IA</h3>
         <p><b>Herramienta:</b> Claude (Anthropic).</p>
-        <p><b>Para qué:</b> organizar la estructura del periódico según la guía del curso, redactar borradores de los textos a partir de la exposición del grupo y programar la página web y la calculadora.</p>
-        <p><b>Revisión:</b> el equipo leyó el contenido, comprobó las cifras contra las fuentes citadas y asume la responsabilidad de lo publicado. Las dos entrevistas son ficticias y están marcadas como tales.</p>
+        <p><b>Para qué:</b> organizar la idea y la estructura del periódico, redactar borradores de los textos y desarrollar las bases para la programación de la calculadora.</p>
+        <p><b>Revisión:</b> el equipo leyó el contenido, comprobó las cifras contra las fuentes citadas y asume la responsabilidad de lo publicado. Las dos entrevistas son ficticias.</p>
       </div>
     </div>
 
@@ -750,19 +816,81 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
   var nf = function(v,d){ return v.toLocaleString('es-CO',{minimumFractionDigits:d,maximumFractionDigits:d}); };
   var fmt = function(v){ return v.toLocaleString('es-CO',{maximumSignificantDigits:4}); };
 
-  /* ---- barra de progreso ---- */
-  var prog = $('progress');
+  /* ---- apariencia ---- */
+  var themeButton = $('theme-toggle');
+  function updateThemeButton(){
+    var dark = document.documentElement.dataset.theme === 'dark';
+    themeButton.setAttribute('aria-pressed', dark);
+  }
+  updateThemeButton();
+  themeButton.addEventListener('click', function(){
+    var theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = theme;
+    updateThemeButton();
+    try { localStorage.setItem('consenso-verde-theme', theme); }
+    catch(e) { console.warn('No se pudo guardar la preferencia de apariencia.', e); }
+  });
+
+  /* ---- barra de progreso y seccion activa ---- */
+  var prog = $('progress'), nav = document.querySelector('.topbar nav'), sectionSelect = $('section-select');
+  var navLinks = Array.from(nav.querySelectorAll('a'));
+  var sections = navLinks.map(function(link){ return $(link.getAttribute('href').slice(1)); });
+  var activeSection = '';
+  sectionSelect.addEventListener('change', function(){ location.hash = sectionSelect.value; });
+  document.documentElement.classList.add('nav-ready');
   function onScroll(){
     var h = document.documentElement.scrollHeight - innerHeight;
     prog.style.transform = 'scaleX(' + (h>0 ? Math.min(1, scrollY/h) : 0) + ')';
+    var current = 0, threshold = document.querySelector('.topbar').getBoundingClientRect().bottom + 24;
+    sections.forEach(function(section,i){ if(section.getBoundingClientRect().top <= threshold) current = i; });
+    if(h>0 && scrollY >= h-1) current = sections.length-1;
+    if(activeSection !== sections[current].id){
+      activeSection = sections[current].id;
+      sectionSelect.value = activeSection;
+      navLinks.forEach(function(link,i){
+        if(i===current) link.setAttribute('aria-current','location');
+        else link.removeAttribute('aria-current');
+      });
+      if(nav.clientWidth){
+        var link = navLinks[current], left = link.offsetLeft - nav.offsetLeft;
+        if(left < nav.scrollLeft) nav.scrollLeft = left;
+        else if(left + link.offsetWidth > nav.scrollLeft + nav.clientWidth) nav.scrollLeft = left + link.offsetWidth - nav.clientWidth;
+      }
+    }
   }
-  addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  addEventListener('scroll', onScroll, {passive:true});
+  addEventListener('resize', function(){ activeSection = ''; onScroll(); });
+  onScroll();
 
   /* ---- reveal ---- */
   var io = new IntersectionObserver(function(es){
     es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
   },{threshold:.12});
   document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  /* ---- escritura de las columnas de opinion ---- */
+  if(!reduce){
+    var typingObserver = new IntersectionObserver(function(entries, observer){
+      entries.forEach(function(entry){
+        if(!entry.isIntersecting) return;
+        var paragraph = entry.target, text = paragraph.textContent, characters = Array.from(text);
+        var original = document.createElement('span'), display = document.createElement('span');
+        original.className = 'typing-original'; original.textContent = text;
+        display.className = 'typing-display'; display.setAttribute('aria-hidden', 'true');
+        paragraph.textContent = ''; paragraph.appendChild(original); paragraph.appendChild(display);
+        paragraph.classList.add('typing'); observer.unobserve(paragraph);
+        var start = performance.now(), duration = 4000;
+        function type(now){
+          var progress = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : Math.min(1, (now-start)/duration);
+          display.textContent = characters.slice(0, Math.ceil(progress*characters.length)).join('');
+          if(progress<1) requestAnimationFrame(type);
+          else { paragraph.textContent = text; paragraph.classList.remove('typing'); }
+        }
+        requestAnimationFrame(type);
+      });
+    },{threshold:.15});
+    document.querySelectorAll('.debate .txt').forEach(function(el){ typingObserver.observe(el); });
+  }
 
   /* ---- contadores ---- */
   function runCount(el){
@@ -798,16 +926,16 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
         for(j=i+1;j<nodes.length;j++){
           b = nodes[j]; d = Math.hypot(a.x-b.x,a.y-b.y);
           if(d<L){
-            ctx.strokeStyle = 'rgba(45,226,192,' + (0.26*(1-d/L)) + ')'; ctx.lineWidth = 1;
+            ctx.strokeStyle = 'rgba(94,224,182,' + (0.26*(1-d/L)) + ')'; ctx.lineWidth = 1;
             ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
             if(!reduce && d<L*.6 && Math.random()<.0012 && pulses.length<16) pulses.push({a:a,b:b,t:0,hot:a.hot||b.hot});
           }
         }
       }
-      for(i=0;i<nodes.length;i++){ a = nodes[i]; ctx.fillStyle = a.hot ? 'rgba(255,90,71,.95)' : 'rgba(45,226,192,.9)'; ctx.fillRect(a.x-2.5,a.y-2.5,5,5); }
+      for(i=0;i<nodes.length;i++){ a = nodes[i]; ctx.fillStyle = a.hot ? 'rgba(167,216,244,.95)' : 'rgba(94,224,182,.9)'; ctx.fillRect(a.x-2.5,a.y-2.5,5,5); }
       pulses = pulses.filter(function(p){
         p.t += .022; var x = p.a.x+(p.b.x-p.a.x)*p.t, y = p.a.y+(p.b.y-p.a.y)*p.t;
-        ctx.fillStyle = p.hot ? '#ffd23f' : '#ffffff'; ctx.fillRect(x-3.5,y-3.5,7,7); return p.t<1;
+        ctx.fillStyle = p.hot ? '#a7d8f4' : '#e8f8f3'; ctx.fillRect(x-3.5,y-3.5,7,7); return p.t<1;
       });
       if(!reduce && visible) raf = requestAnimationFrame(frame);
     }
@@ -908,3 +1036,5 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
   calc();
 })();
 </script>
+</body>
+</html>
