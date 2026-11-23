@@ -51,7 +51,9 @@ a{color:inherit}
 :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
 .wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 section{scroll-margin-top:60px}
-.band{padding-block:clamp(56px,8vw,104px)}
+.band{position:relative;padding-block:clamp(56px,8vw,104px)}
+.band::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(94,224,182,.55),rgba(167,216,244,.55),transparent);transform-origin:center;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+html.section-effects .band:not(.section-visible)::before{transform:scaleX(0)}
 .light{background:var(--paper);color:var(--ink);--focus:#086b55}
 .teal{background:var(--teal);color:var(--on-dark)}
 .deep{background:var(--deep);color:var(--on-dark)}
@@ -66,7 +68,7 @@ h2{font:400 clamp(2.2rem,5.2vw,4rem)/1.02 var(--display);text-transform:uppercas
 h3{font:700 1.15rem/1.25 var(--ui);margin:0 0 10px}
 .byline{font:500 .9rem var(--ui);margin:0 0 40px;opacity:.8}
 .lead{font:400 1.12rem/1.6 var(--serif);max-width:62ch;margin:0 0 36px}
-.src{font:500 .8rem/1.45 var(--ui);opacity:.75}
+.src{font:500 .8rem/1.45 var(--ui)}
 
 /* ---------- reveal ---------- */
 .reveal{opacity:.55;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
@@ -81,6 +83,7 @@ h3{font:700 1.15rem/1.25 var(--ui);margin:0 0 10px}
 .topbar nav{display:flex;gap:4px;overflow-x:auto;min-width:0;margin-left:auto}
 .topbar nav a{font:500 .85rem var(--ui);text-decoration:none;padding:8px 11px;border-radius:99px;white-space:nowrap;color:var(--on-dark-soft);transition:background .2s,color .2s}
 .topbar nav a:hover,.topbar nav a[aria-current="location"]{background:rgba(45,226,192,.15);color:var(--on-dark)}
+.topbar nav a:focus-visible{outline-offset:-3px}
 .section-select{display:none;min-width:0;width:150px;margin-left:auto;padding:8px;border:1px solid var(--mint);border-radius:8px;background:var(--deep);color:var(--on-dark);font:700 .85rem var(--ui)}
 .section-progress{flex:none;color:var(--on-dark-soft);font:700 .72rem var(--ui);white-space:nowrap}
 .progress{position:absolute;left:0;bottom:-1px;height:3px;width:100%;transform-origin:left;transform:scaleX(0);background:linear-gradient(90deg,var(--mint),var(--sun))}
@@ -123,6 +126,7 @@ h3{font:700 1.15rem/1.25 var(--ui);margin:0 0 10px}
 .cta-row{display:flex;flex-wrap:wrap;gap:12px;animation:rise .9s .55s both}
 .btn{font:700 .9rem var(--ui);text-decoration:none;padding:13px 20px;border-radius:99px;border:2px solid var(--mint);color:var(--deep);background:var(--mint);transition:transform .2s,box-shadow .2s;cursor:pointer;display:inline-block}
 .btn:hover{transform:translateY(-2px);box-shadow:0 8px 0 rgba(45,226,192,.25)}
+.btn:focus-visible{box-shadow:0 0 0 5px rgba(94,224,182,.25)}
 .btn.ghost{background:transparent;color:var(--on-dark)}
 .fig-card{border:2px solid var(--coral);padding:clamp(20px,3vw,32px);position:relative;background:rgba(3,31,33,.88);animation:rise .9s .5s both}
 .fig-card::before{content:"";position:absolute;inset:8px -8px -8px 8px;border:2px solid var(--sun);z-index:-1}
@@ -187,7 +191,11 @@ h3{font:700 1.15rem/1.25 var(--ui);margin:0 0 10px}
 .sim{border:1px solid var(--line);border-radius:16px;padding:clamp(16px,2vw,24px);background:var(--paper);display:flex;flex-direction:column}
 .sim h4{font:700 1.05rem var(--ui);margin:0 0 4px}
 .sim p.d{font:500 .85rem/1.5 var(--ui);color:var(--ink-soft);margin:0 0 18px}
-.sim-label{font:700 .68rem var(--ui);letter-spacing:.12em;text-transform:uppercase;color:var(--mint-ink);margin:0 0 10px}
+.sim-heading{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:4px 12px;margin:0 0 10px}
+.sim-label{font:700 .68rem var(--ui);letter-spacing:.12em;text-transform:uppercase;color:var(--mint-ink);margin:0}
+.sim-state{display:inline-flex;align-items:center;gap:6px;color:var(--ink-soft);font:700 .72rem/1.35 var(--ui)}
+.sim-state::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--mint-ink);flex:none}
+.pow .sim-state::before{background:var(--coral-ink)}
 .cells{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:clamp(4px,.7vw,8px);padding:clamp(10px,1.5vw,16px);margin:0 0 18px;border:1px solid var(--line);border-radius:12px;background:var(--muted-surface)}
 .cell{aspect-ratio:1;background:var(--cell);border:1px solid var(--cell-inner);border-radius:6px;position:relative;transition:background .3s,transform .3s,box-shadow .3s}
 .cell::after{content:"";position:absolute;inset:34%;border-radius:3px;background:var(--cell-inner);transition:background .3s}
@@ -205,7 +213,7 @@ h3{font:700 1.15rem/1.25 var(--ui);margin:0 0 10px}
 .meter{font:700 .85rem var(--ui)}
 .meter b{font:400 2rem/1 var(--display);margin-right:6px}
 .pow .meter b{color:var(--coral-ink)} .pos .meter b{color:var(--mint-ink)}
-.sim .btn{background:var(--ink);color:var(--paper);border-color:var(--ink);padding:10px 16px;font-size:.82rem}
+.sim .btn{background:var(--ink);color:var(--paper);border-color:var(--ink);padding:10px 16px;min-height:44px;font-size:.82rem}
 
 /* ---------- IA y mi carrera ---------- */
 .ia-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
@@ -396,6 +404,7 @@ input[aria-invalid="true"]{border-color:var(--coral-ink)}
 :root[data-motion="off"] .reveal{opacity:1;transform:none}
 :root[data-motion="off"] .voice.reveal{opacity:1;transform:none}
 :root[data-motion="off"] .voice.reveal.in:hover{transform:none}
+:root[data-motion="off"] .band::before{transform:none!important}
 
 /* ---------- cierre ---------- */
 .close-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;margin-bottom:46px}
@@ -431,6 +440,8 @@ input[aria-invalid="true"]{border-color:var(--coral-ink)}
   .calc-in{border-right:0;border-bottom:2px solid var(--ink)}
   .ia-grid,.close-grid{grid-template-columns:minmax(0,1fr)}
   .voices,.sim-grid,.debate{grid-template-columns:minmax(0,1fr)}
+  .voice.reveal,.voice.reveal:nth-child(2){transform:translateY(24px)}
+  .voice.reveal.in{transform:none}
   .vs{position:relative;left:auto;top:auto;translate:none;margin:16px auto;width:58px;height:58px}
   .sources ol{columns:1}
 }
@@ -459,8 +470,6 @@ input[aria-invalid="true"]{border-color:var(--coral-ink)}
 }
 @media (max-width:640px){
   #voces{background-image:linear-gradient(180deg,rgba(3,31,33,.68) 0,rgba(3,31,33,.68) 120px,var(--deep) 255px),url("represa-huila.jpg");background-size:100% 100%,100% auto;background-position:center,center top;background-repeat:no-repeat;background-color:var(--deep)}
-  .voice.reveal,.voice.reveal:nth-child(2){transform:translateY(24px)}
-  .voice.reveal.in{transform:none}
   .bar-row{grid-template-columns:minmax(0,1fr)}
   .bar-val{text-align:left}
   .axis{margin:6px 0 0}
@@ -482,6 +491,7 @@ input[aria-invalid="true"]{border-color:var(--coral-ink)}
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .reveal{opacity:1;transform:none}
   .voice.reveal,.voice.reveal:nth-child(2),.voice.reveal.in:hover{transform:none}
+  .band::before{transform:none!important}
   .ticker-track{animation:none}
   html{scroll-behavior:auto}
 }
@@ -495,6 +505,7 @@ input[aria-invalid="true"]{border-color:var(--coral-ink)}
   html{scroll-behavior:auto}
   body::before,.skip-link,.topbar,.progress,.hero canvas,.theme-control,.reading-tools,.share-tools,.share-status,.ticker,.sim .btn,.seg,.presets,#c-merge,.myth-q button,.hero .cta-row,.pdf-action,.export-actions,.quick-tools,.overlay-dialog{display:none!important}
   .reveal{opacity:1!important;transform:none!important}
+  .band::before{transform:none!important}
   .typing-original{opacity:1!important}
   .typing-display{display:none!important}
   .ans{grid-template-rows:1fr!important}
@@ -657,14 +668,14 @@ input[aria-invalid="true"]{border-color:var(--coral-ink)}
         <div class="sim pow" id="sim-pow">
           <h4>Prueba de Trabajo</h4>
           <p class="d">Todos los mineros compiten; solo uno gana, todos gastan.</p>
-          <p class="sim-label">24 mineros en la red</p>
+          <div class="sim-heading"><p class="sim-label">24 mineros en la red</p><span class="sim-state" role="status">Bloque producido</span></div>
           <div class="cells" aria-hidden="true"></div>
           <div class="sim-foot"><div class="meter" aria-live="polite"><b class="tot">0</b>unidades de energía</div><button type="button" class="btn go" aria-label="Producir un bloque con Prueba de Trabajo">Producir un bloque</button></div>
         </div>
         <div class="sim pos" id="sim-pos">
           <h4>Prueba de Participación</h4>
           <p class="d">Se elige un validador que ya arriesgó su capital; los demás no compiten.</p>
-          <p class="sim-label">24 validadores en la red</p>
+          <div class="sim-heading"><p class="sim-label">24 validadores en la red</p><span class="sim-state" role="status">Validador seleccionado</span></div>
           <div class="cells" aria-hidden="true"></div>
           <div class="sim-foot"><div class="meter" aria-live="polite"><b class="tot">0</b>unidades de energía</div><button type="button" class="btn go" aria-label="Producir un bloque con Prueba de Participación">Producir un bloque</button></div>
         </div>
@@ -1204,6 +1215,13 @@ input[aria-invalid="true"]{border-color:var(--coral-ink)}
     es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
   },{threshold:.12});
   document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  var sectionObserver = new IntersectionObserver(function(entries, observer){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){ entry.target.classList.add('section-visible'); observer.unobserve(entry.target); }
+    });
+  },{rootMargin:'0px 0px -8% 0px'});
+  document.documentElement.classList.add('section-effects');
+  document.querySelectorAll('.band').forEach(function(section){ sectionObserver.observe(section); });
 
   /* ---- escritura de las columnas de opinion ---- */
   {
@@ -1274,7 +1292,9 @@ input[aria-invalid="true"]{border-color:var(--coral-ink)}
       for(i=0;i<nodes.length;i++){ a = nodes[i]; ctx.fillStyle = a.hot ? 'rgba(167,216,244,.95)' : 'rgba(94,224,182,.9)'; ctx.fillRect(a.x-2.5,a.y-2.5,5,5); }
       pulses = pulses.filter(function(p){
         p.t += .022; var x = p.a.x+(p.b.x-p.a.x)*p.t, y = p.a.y+(p.b.y-p.a.y)*p.t;
-        ctx.fillStyle = p.hot ? '#a7d8f4' : '#e8f8f3'; ctx.fillRect(x-3.5,y-3.5,7,7); return p.t<1;
+        ctx.fillStyle = p.hot ? 'rgba(167,216,244,.2)' : 'rgba(94,224,182,.2)';
+        ctx.beginPath(); ctx.arc(x,y,7+2*Math.sin(Math.PI*p.t),0,Math.PI*2); ctx.fill();
+        ctx.fillStyle = p.hot ? '#a7d8f4' : '#e8f8f3'; ctx.beginPath(); ctx.arc(x,y,2.5,0,Math.PI*2); ctx.fill(); return p.t<1;
       });
       if(!motionPaused() && visible) raf = requestAnimationFrame(frame);
     }
@@ -1328,7 +1348,7 @@ input[aria-invalid="true"]{border-color:var(--coral-ink)}
 
   /* ---- simulador ---- */
   function sim(id,type){
-    var el = $(id), grid = el.querySelector('.cells'), out = el.querySelector('.tot'), btn = el.querySelector('.go'), n = 24, total = 0, busy = false, cells = [], timer, finish;
+    var el = $(id), grid = el.querySelector('.cells'), out = el.querySelector('.tot'), btn = el.querySelector('.go'), state = el.querySelector('.sim-state'), n = 24, total = 0, busy = false, cells = [], timer, finish;
     for(var i=0;i<n;i++){ var d = document.createElement('div'); d.className='cell'; grid.appendChild(d); cells.push(d); }
     function round(animate){
       var w = Math.floor(Math.random()*n);
@@ -1336,12 +1356,12 @@ input[aria-invalid="true"]{border-color:var(--coral-ink)}
       if(type==='pow'){
         total += n; out.textContent = total;
         if(animate && !motionPaused()){
-          busy = true; cells.forEach(function(c){ c.classList.add('work'); });
-          finish = function(){ cells.forEach(function(c){ c.classList.remove('work'); }); cells[w].classList.add('win'); busy = false; };
+          busy = true; state.textContent = 'Mineros compitiendo'; cells.forEach(function(c){ c.classList.add('work'); });
+          finish = function(){ cells.forEach(function(c){ c.classList.remove('work'); }); cells[w].classList.add('win'); state.textContent = 'Bloque producido'; busy = false; };
           timer = setTimeout(finish, 900);
-        } else { cells[w].classList.add('win'); }
+        } else { cells[w].classList.add('win'); state.textContent = 'Bloque producido'; }
       } else {
-        total += 1; out.textContent = total; cells[w].classList.add('pick');
+        total += 1; out.textContent = total; cells[w].classList.add('pick'); state.textContent = 'Validador seleccionado';
       }
     }
     btn.addEventListener('click', function(){ if(!busy) round(true); });
