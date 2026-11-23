@@ -184,20 +184,24 @@ h3{font:700 1.15rem/1.25 var(--ui);margin:0 0 10px}
 .note b{color:var(--ink)}
 
 .sim-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
-.sim{border:2px solid var(--ink);padding:18px;background:var(--paper)}
-.sim h4{font:700 1rem var(--ui);margin:0 0 2px}
-.sim p.d{font:500 .85rem/1.4 var(--ui);color:var(--ink-soft);margin:0 0 14px}
-.cells{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-bottom:14px}
-.cell{aspect-ratio:1;background:var(--cell);position:relative;transition:background .3s,transform .3s,box-shadow .3s}
-.cell::after{content:"";position:absolute;inset:34%;background:var(--cell-inner);transition:background .3s}
-.pow .cell.work{background:var(--coral);animation:pulse .5s ease-in-out infinite alternate}
+.sim{border:1px solid var(--line);border-radius:16px;padding:clamp(16px,2vw,24px);background:var(--paper);display:flex;flex-direction:column}
+.sim h4{font:700 1.05rem var(--ui);margin:0 0 4px}
+.sim p.d{font:500 .85rem/1.5 var(--ui);color:var(--ink-soft);margin:0 0 18px}
+.sim-label{font:700 .68rem var(--ui);letter-spacing:.12em;text-transform:uppercase;color:var(--mint-ink);margin:0 0 10px}
+.cells{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:clamp(4px,.7vw,8px);padding:clamp(10px,1.5vw,16px);margin:0 0 18px;border:1px solid var(--line);border-radius:12px;background:var(--muted-surface)}
+.cell{aspect-ratio:1;background:var(--cell);border:1px solid var(--cell-inner);border-radius:6px;position:relative;transition:background .3s,transform .3s,box-shadow .3s}
+.cell::after{content:"";position:absolute;inset:34%;border-radius:3px;background:var(--cell-inner);transition:background .3s}
+.pow .cell.work{background:var(--coral);border-color:var(--coral);animation:pulse .5s ease-in-out infinite alternate}
+.pow .cell.work:nth-child(3n){animation-delay:.15s}
+.pow .cell.work:nth-child(3n+1){animation-delay:.3s}
 .pow .cell.work::after{background:#ffd6cf}
-.cell.win{background:var(--sun);box-shadow:0 0 0 3px var(--ink);transform:scale(1.08)}
+.cell.win{background:var(--sun);border-color:var(--sun);box-shadow:0 0 0 2px var(--ink),0 0 16px rgba(167,216,244,.6);transform:scale(1.05)}
 .cell.win::after{background:var(--deep)}
-.pos .cell.pick{background:var(--mint-ink);box-shadow:0 0 0 3px var(--ink);transform:scale(1.08)}
+.pos .cell.pick{background:var(--mint);border-color:var(--mint);box-shadow:0 0 0 2px var(--ink),0 0 16px rgba(94,224,182,.6);transform:scale(1.05);animation:select-node .6s ease-out}
 .pos .cell.pick::after{background:var(--deep)}
-@keyframes pulse{to{transform:scale(.88)}}
-.sim-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px}
+@keyframes pulse{to{transform:scale(.88);opacity:.7}}
+@keyframes select-node{from{transform:scale(.78);opacity:.55}to{transform:scale(1.05);opacity:1}}
+.sim-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin-top:auto;padding-top:16px;border-top:1px solid var(--line)}
 .meter{font:700 .85rem var(--ui)}
 .meter b{font:400 2rem/1 var(--display);margin-right:6px}
 .pow .meter b{color:var(--coral-ink)} .pos .meter b{color:var(--mint-ink)}
@@ -217,7 +221,7 @@ h3{font:700 1.15rem/1.25 var(--ui);margin:0 0 10px}
 #voces .eyebrow{color:var(--mint)}
 #voces h2{color:var(--on-dark)}
 .voices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px}
-.voice{background:var(--card);color:var(--ink);border:2px solid var(--ink);padding:24px;--focus:var(--mint-ink)}
+.voice{--ink:var(--on-dark);--ink-soft:var(--on-dark-soft);--mint-ink:var(--mint);--focus:var(--sun);background:linear-gradient(135deg,rgba(18,64,63,.88),rgba(3,31,33,.88));color:var(--ink);border:1px solid rgba(167,216,244,.28);border-radius:16px;padding:24px;box-shadow:0 12px 32px rgba(0,0,0,.18);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
 .voice header{display:flex;gap:14px;align-items:center;margin-bottom:18px}
 .avatar{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font:400 1.4rem var(--display);background:var(--teal);color:var(--mint);flex:none}
 .voice:nth-child(2) .avatar{background:var(--sun);color:var(--deep)}
@@ -358,8 +362,12 @@ input[aria-invalid="true"]{border-color:var(--coral-ink)}
 .glossary dd{margin:0;font:400 .95rem/1.55 var(--serif)}
 .light,.teal,.deep{transition:background-color .35s ease,color .35s ease}
 .band{background-image:linear-gradient(180deg,rgba(94,224,182,.035),transparent 16%)}
-.voice,.glossary div{transition:transform .25s ease,box-shadow .25s ease}
-.voice:hover,.glossary div:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(3,31,33,.12)}
+.voice.reveal{transform:translate(-24px,18px);transition:opacity .75s ease var(--d,0s),transform .75s cubic-bezier(.2,.7,.2,1) var(--d,0s),box-shadow .25s ease}
+.voice.reveal:nth-child(2){transform:translate(24px,18px)}
+.voice.reveal.in{transform:none}
+.voice.reveal.in:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(3,31,33,.12)}
+.glossary div{transition:transform .25s ease,box-shadow .25s ease}
+.glossary div:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(3,31,33,.12)}
 .quick-tools{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:30;display:flex;gap:8px}
 .quick-tools[hidden],.quick-tools [hidden]{display:none}
 .quick-tools button{border:1px solid var(--mint);border-radius:99px;padding:10px 14px;background:var(--deep);color:var(--on-dark);font:700 .8rem var(--ui);box-shadow:0 4px 16px rgba(0,0,0,.25);cursor:pointer}
@@ -386,6 +394,8 @@ input[aria-invalid="true"]{border-color:var(--coral-ink)}
 :root[data-motion="off"] *, :root[data-motion="off"] *::before, :root[data-motion="off"] *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 :root[data-motion="off"]{scroll-behavior:auto}
 :root[data-motion="off"] .reveal{opacity:1;transform:none}
+:root[data-motion="off"] .voice.reveal{opacity:1;transform:none}
+:root[data-motion="off"] .voice.reveal.in:hover{transform:none}
 
 /* ---------- cierre ---------- */
 .close-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;margin-bottom:46px}
@@ -449,6 +459,8 @@ input[aria-invalid="true"]{border-color:var(--coral-ink)}
 }
 @media (max-width:640px){
   #voces{background-image:linear-gradient(180deg,rgba(3,31,33,.68) 0,rgba(3,31,33,.68) 120px,var(--deep) 255px),url("represa-huila.jpg");background-size:100% 100%,100% auto;background-position:center,center top;background-repeat:no-repeat;background-color:var(--deep)}
+  .voice.reveal,.voice.reveal:nth-child(2){transform:translateY(24px)}
+  .voice.reveal.in{transform:none}
   .bar-row{grid-template-columns:minmax(0,1fr)}
   .bar-val{text-align:left}
   .axis{margin:6px 0 0}
@@ -469,6 +481,7 @@ input[aria-invalid="true"]{border-color:var(--coral-ink)}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .reveal{opacity:1;transform:none}
+  .voice.reveal,.voice.reveal:nth-child(2),.voice.reveal.in:hover{transform:none}
   .ticker-track{animation:none}
   html{scroll-behavior:auto}
 }
@@ -644,14 +657,16 @@ input[aria-invalid="true"]{border-color:var(--coral-ink)}
         <div class="sim pow" id="sim-pow">
           <h4>Prueba de Trabajo</h4>
           <p class="d">Todos los mineros compiten; solo uno gana, todos gastan.</p>
+          <p class="sim-label">24 mineros en la red</p>
           <div class="cells" aria-hidden="true"></div>
-          <div class="sim-foot"><div class="meter"><b class="tot">0</b>unidades de energía</div><button type="button" class="btn go">Producir un bloque</button></div>
+          <div class="sim-foot"><div class="meter" aria-live="polite"><b class="tot">0</b>unidades de energía</div><button type="button" class="btn go" aria-label="Producir un bloque con Prueba de Trabajo">Producir un bloque</button></div>
         </div>
         <div class="sim pos" id="sim-pos">
           <h4>Prueba de Participación</h4>
           <p class="d">Se elige un validador que ya arriesgó su capital; los demás no compiten.</p>
+          <p class="sim-label">24 validadores en la red</p>
           <div class="cells" aria-hidden="true"></div>
-          <div class="sim-foot"><div class="meter"><b class="tot">0</b>unidades de energía</div><button type="button" class="btn go">Producir un bloque</button></div>
+          <div class="sim-foot"><div class="meter" aria-live="polite"><b class="tot">0</b>unidades de energía</div><button type="button" class="btn go" aria-label="Producir un bloque con Prueba de Participación">Producir un bloque</button></div>
         </div>
       </div>
     </div>
