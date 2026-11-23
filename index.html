@@ -37,11 +37,15 @@
   --mint-ink:#72e0ba; --coral-ink:#ffaaa1; --muted-surface:#29464a;
   --cell:#36535a; --cell-inner:#729690; --hover-surface:#29464a; --date-ink:#a7d8f4; --focus:#72e0ba;
 }
+:root[data-text-size="large"]{font-size:112.5%}
+:root[data-text-size="larger"]{font-size:125%}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--deep);color:var(--on-dark);font-family:var(--ui);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--deep)}
 a{color:inherit}
+.skip-link{position:fixed;left:16px;top:-100px;z-index:100;padding:10px 16px;background:var(--mint);color:var(--deep);font-weight:700}
+.skip-link:focus{top:12px}
 :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
 .wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 section{scroll-margin-top:60px}
@@ -93,6 +97,15 @@ h3{font:700 1.15rem/1.25 var(--ui);margin:0 0 10px}
 .theme-toggle .sun-icon,.theme-toggle[aria-pressed="true"] .moon-icon{color:var(--deep)}
 .theme-toggle[aria-pressed="true"] .sun-icon{color:var(--on-dark-soft)}
 .theme-toggle:hover{border-color:var(--mint)}
+.reading-tools{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin:0 0 24px;color:var(--on-dark-soft);font:500 .85rem var(--ui)}
+.text-size{display:flex;align-items:center;gap:8px}
+.text-size label{color:var(--on-dark-soft);display:block}
+.text-size select,.share-tools select,.share-tools input{min-width:0;padding:8px;border:1px solid var(--mint);border-radius:8px;background:var(--deep);color:var(--on-dark);font:500 .85rem var(--ui)}
+.share-tools{display:flex;align-items:end;flex-wrap:wrap;gap:10px;margin-top:24px}
+.share-tools label{color:var(--on-dark-soft)}
+.share-tools input{width:min(100%,360px)}
+.share-tools button{border:1px solid var(--mint);background:transparent;color:var(--on-dark);border-radius:8px;padding:8px 12px;font:700 .85rem var(--ui);cursor:pointer}
+.share-status{font:500 .8rem var(--ui);color:var(--on-dark-soft);margin:8px 0 0}
 .hero-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(28px,5vw,64px);align-items:end}
 .mast{font:400 clamp(3.4rem,11vw,9.2rem)/.86 var(--display);text-transform:uppercase;margin:0;letter-spacing:.005em}
 .mast span{display:block;animation:rise .95s cubic-bezier(.2,.7,.2,1) both}
@@ -146,7 +159,9 @@ h3{font:700 1.15rem/1.25 var(--ui);margin:0 0 10px}
 .seg button{font:700 .8rem var(--ui);padding:9px 16px;border:0;background:var(--card);color:var(--ink);cursor:pointer}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
 .bars{display:grid;gap:16px}
-.bar-row{display:grid;grid-template-columns:200px minmax(0,1fr) 130px;gap:14px;align-items:center}
+.bar-row{display:grid;grid-template-columns:200px minmax(0,1fr) 130px;gap:14px;align-items:center;width:100%;padding:4px 0;border:0;text-align:left;background:transparent;color:var(--ink);cursor:pointer}
+.bar-row:hover .bar-name,.bar-row[aria-expanded="true"] .bar-name{text-decoration:underline}
+.chart-detail{margin:0;padding:12px 16px;background:var(--muted-surface);color:var(--ink);font:500 .9rem/1.5 var(--ui)}
 .bar-name{font:700 .95rem/1.2 var(--ui)}
 .bar-name small{display:block;font:500 .75rem var(--ui);color:var(--ink-soft);margin-top:2px}
 .track{position:relative;height:34px;background:repeating-linear-gradient(90deg,var(--muted-surface) 0 1px,transparent 1px 10%);border-left:2px solid var(--ink)}
@@ -311,6 +326,22 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
 .pill{font:700 .68rem var(--ui);letter-spacing:.1em;text-transform:uppercase;padding:4px 9px}
 .pill.ok{background:var(--mint);color:var(--deep)} .pill.no{background:var(--coral);color:var(--deep)} .pill.base{background:var(--on-dark);color:var(--deep)}
 .reading{margin:16px 0 0;font:400 .98rem/1.6 var(--serif);border-top:2px solid var(--sun);padding-top:14px}
+.calc-help{margin:0 0 18px;font:500 .85rem/1.5 var(--ui);color:var(--ink-soft)}
+.calc-help summary{cursor:pointer;color:var(--mint-ink);font-weight:700}
+.calc-help dl{margin:10px 0}
+.calc-help dt{font-weight:700;color:var(--ink)}
+.calc-help dd{margin:0 0 8px}
+.calc-error{font:700 .85rem/1.5 var(--ui);color:var(--coral-ink);margin:12px 0}
+input[aria-invalid="true"]{border-color:var(--coral-ink)}
+.calc-out.is-invalid .res,.calc-out.is-invalid .reading{display:none}
+.export-actions{margin-top:18px}
+.export-actions .btn{font-size:.82rem;padding:10px 16px}
+.export-actions .btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.calc-report{display:none}
+.glossary{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:16px;margin:0}
+.glossary div{padding:20px;border:1px solid var(--line-dark);background:rgba(94,224,182,.06)}
+.glossary dt{font:700 1rem var(--ui);color:var(--mint);margin-bottom:6px}
+.glossary dd{margin:0;font:400 .95rem/1.55 var(--serif)}
 
 /* ---------- cierre ---------- */
 .close-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;margin-bottom:46px}
@@ -355,6 +386,11 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
   table.log td:last-child{padding-bottom:16px}
   table.log td::before{content:attr(data-label);display:block;margin-bottom:3px;font:700 .68rem var(--ui);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
 }
+@media screen and (max-width:440px){
+  :root[data-text-size="larger"] .topbar .wrap{height:auto;min-height:52px;flex-wrap:wrap;padding-top:8px;padding-bottom:8px}
+  :root[data-text-size="larger"] .section-select{flex:0 0 100%;width:100%;margin-left:0}
+  :root[data-text-size="larger"] section{scroll-margin-top:110px}
+}
 @media (max-width:640px){
   .bar-row{grid-template-columns:minmax(0,1fr)}
   .bar-val{text-align:left}
@@ -367,6 +403,11 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
   .topbar .brand{font-size:1.05rem}
   .topbar .wrap{gap:10px}
   .topbar nav{min-width:0}
+  .opts,.opts tbody,.opts tr,.opts td{display:block;width:100%}
+  .opts thead{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  .opts tr{border-top:1px solid var(--line);padding:10px 0}
+  .opts td:first-child{width:100%}
+  .opts td[data-label]::before{content:attr(data-label);display:block;font:700 .68rem var(--ui);color:var(--ink-soft);margin-bottom:4px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
@@ -376,12 +417,13 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
 }
 
 /* ---------- version PDF (impresion) ---------- */
-@page{size:900pt 9288pt;margin:0}
+@page{size:900pt 12000pt;margin:0}
+@page calc-report{size:A4 landscape;margin:18mm}
 @media print{
   *{animation:none!important;transition:none!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   body{zoom:.92}
   html{scroll-behavior:auto}
-  body::before,.topbar,.progress,.hero canvas,.theme-control,.ticker,.sim .btn,.seg,.presets,#c-merge,.myth-q button,.hero .cta-row,.pdf-action{display:none!important}
+  body::before,.skip-link,.topbar,.progress,.hero canvas,.theme-control,.reading-tools,.share-tools,.share-status,.ticker,.sim .btn,.seg,.presets,#c-merge,.myth-q button,.hero .cta-row,.pdf-action,.export-actions{display:none!important}
   .reveal{opacity:1!important;transform:none!important}
   .typing-original{opacity:1!important}
   .typing-display{display:none!important}
@@ -391,19 +433,27 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
   .facts{position:static}
   .hero{padding-top:44px}
   .band{padding-block:64px}
+  body.printing-report{zoom:1;background:#fff;color:#102329}
+  body.printing-report > :not(.calc-report){display:none!important}
+  body.printing-report .calc-report{display:block;page:calc-report;font:12pt/1.5 Arial,sans-serif}
+  .calc-report h1{font-size:22pt}
+  .calc-report h2{font:700 14pt Arial,sans-serif;text-transform:none;-webkit-text-fill-color:initial;background:none}
+  .calc-report table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:9pt}
+  .calc-report th,.calc-report td{border:1px solid #536a69;padding:8px;text-align:left}
 }
 </style>
 </head>
 <body>
 
+<a class="skip-link" href="#reportaje">Saltar al contenido</a>
 <header class="topbar">
   <div class="wrap">
     <a class="brand" href="#portada"><i></i>Consenso Verde</a>
     <nav aria-label="Secciones del periódico">
-      <a href="#portada">Portada</a><a href="#reportaje">Reportaje</a><a href="#ia-y-carrera">IA y carrera</a><a href="#voces">Voces</a><a href="#debate">Debate</a><a href="#changelog">Changelog</a><a href="#mitos">Mitos</a><a href="#historia">Historia</a><a href="#proyecto">Proyecto</a><a href="#cierre">Cierre</a>
+      <a href="#portada">Portada</a><a href="#reportaje">Reportaje</a><a href="#ia-y-carrera">IA y carrera</a><a href="#voces">Voces</a><a href="#debate">Debate</a><a href="#changelog">Changelog</a><a href="#mitos">Mitos</a><a href="#historia">Historia</a><a href="#glosario">Glosario</a><a href="#proyecto">Proyecto</a><a href="#cierre">Cierre</a>
     </nav>
     <select class="section-select" id="section-select" aria-label="Ir a una sección">
-      <option value="portada">Portada</option><option value="reportaje">Reportaje</option><option value="ia-y-carrera">IA y carrera</option><option value="voces">Voces</option><option value="debate">Debate</option><option value="changelog">Changelog</option><option value="mitos">Mitos</option><option value="historia">Historia</option><option value="proyecto">Proyecto</option><option value="cierre">Cierre</option>
+      <option value="portada">Portada</option><option value="reportaje">Reportaje</option><option value="ia-y-carrera">IA y carrera</option><option value="voces">Voces</option><option value="debate">Debate</option><option value="changelog">Changelog</option><option value="mitos">Mitos</option><option value="historia">Historia</option><option value="glosario">Glosario</option><option value="proyecto">Proyecto</option><option value="cierre">Cierre</option>
     </select>
   </div>
   <div class="progress" id="progress"></div>
@@ -425,6 +475,10 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
         <svg class="moon-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"></path></svg>
       </button>
     </div>
+    <div class="reading-tools">
+      <span id="reading-time">Tiempo de lectura estimado</span>
+      <div class="text-size"><label for="text-size">Tamaño del texto</label><select id="text-size"><option value="normal">Normal</option><option value="large">Grande</option><option value="larger">Muy grande</option></select></div>
+    </div>
     <div class="hero-grid">
       <div>
         <h1 class="mast"><span class="w1">Consenso</span><span class="w2">Verde</span></h1>
@@ -434,6 +488,12 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
           <a class="btn" href="#reportaje">Leer el reportaje</a>
           <a class="btn ghost" href="#proyecto">Probar la calculadora</a>
         </div>
+        <div class="share-tools">
+          <label for="share-section">Compartir sección<select id="share-section"><option value="portada">Portada</option></select></label>
+          <label for="share-link">Enlace<input id="share-link" type="text" readonly value="https://santiagoestteban.github.io/PeriodicoEcologico/#portada"></label>
+          <button type="button" id="share-copy">Copiar enlace</button>
+        </div>
+        <p class="share-status" id="share-status" role="status"></p>
       </div>
       <div class="fig-card">
         <p class="fig-label">Lo que consume Bitcoin al año</p>
@@ -453,7 +513,7 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
 </div>
 
 <!-- ===================== 2. REPORTAJE CENTRAL ===================== -->
-<section class="band light" id="reportaje">
+<section class="band light" id="reportaje" tabindex="-1">
   <div class="wrap">
     <p class="eyebrow">Reportaje central</p>
     <h2>La electricidad es el precio de ponerse de acuerdo</h2>
@@ -503,10 +563,14 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
           <button type="button" id="sc-log" aria-pressed="false">Logarítmica</button>
         </div>
       </div>
+      <p class="sub">Selecciona una barra para conocer su contexto.</p>
       <div class="bars" id="bars">
-        <div class="bar-row"><div class="bar-name">Bitcoin<small>Prueba de Trabajo · rango 138–204</small></div><div class="track"><i class="fill pow" data-v="204"></i><i class="mark" data-v="138"></i></div><div class="bar-val">138–204 TWh</div></div>
-        <div class="bar-row"><div class="bar-name">Ethereum, antes de The Merge<small>Prueba de Trabajo</small></div><div class="track"><i class="fill pow" data-v="21"></i></div><div class="bar-val">≈ 21 TWh</div></div>
-        <div class="bar-row"><div class="bar-name">Ethereum, después<small>Prueba de Participación</small></div><div class="track"><i class="fill pos" data-v="0.0079"></i></div><div class="bar-val">≈ 0,0079 TWh</div></div>
+        <button type="button" class="bar-row" aria-expanded="false" aria-controls="bar-info-bitcoin"><span class="bar-name">Bitcoin<small>Prueba de Trabajo · rango 138–204</small></span><span class="track" aria-hidden="true"><i class="fill pow" data-v="204"></i><i class="mark" data-v="138"></i></span><span class="bar-val">138–204 TWh</span></button>
+        <p class="chart-detail" id="bar-info-bitcoin" hidden>Rango de estimaciones de consumo anual de la red, no por transacción. La marca señala el extremo inferior. <a href="#fuentes">Consultar fuentes</a>.</p>
+        <button type="button" class="bar-row" aria-expanded="false" aria-controls="bar-info-before"><span class="bar-name">Ethereum, antes de The Merge<small>Prueba de Trabajo</small></span><span class="track" aria-hidden="true"><i class="fill pow" data-v="21"></i></span><span class="bar-val">≈ 21 TWh</span></button>
+        <p class="chart-detail" id="bar-info-before" hidden>Estimación histórica incluida en esta edición para comparar el consumo anterior al cambio de consenso. Consulta la advertencia sobre las fuentes al final.</p>
+        <button type="button" class="bar-row" aria-expanded="false" aria-controls="bar-info-after"><span class="bar-name">Ethereum, después<small>Prueba de Participación</small></span><span class="track" aria-hidden="true"><i class="fill pos" data-v="0.0079"></i></span><span class="bar-val">≈ 0,0079 TWh</span></button>
+        <p class="chart-detail" id="bar-info-after" hidden>Estimación incluida en esta edición después del cambio de consenso; distintas metodologías y fechas producen cifras diferentes. <a href="#fuentes">Consultar fuentes</a>.</p>
       </div>
       <div class="axis" id="axis"></div>
       <p class="note">Cifras: CBECI y Digiconomist (Bitcoin, 2026); Cambridge Centre for Alternative Finance y ethereum.org (Ethereum). La línea negra marca el extremo inferior del rango de Bitcoin. Son estimaciones de distintas fuentes, útiles para ver el orden de magnitud: la diferencia es de miles de veces.</p>
@@ -688,6 +752,22 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
   </div>
 </section>
 
+<section class="band teal" id="glosario">
+  <div class="wrap">
+    <p class="eyebrow">Para entender mejor</p>
+    <h2>Glosario esencial</h2>
+    <p class="lead">Conceptos clave para leer esta edición y usar la calculadora.</p>
+    <dl class="glossary">
+      <div><dt>Blockchain</dt><dd>Registro compartido de información organizado en bloques enlazados, mantenido por una red de participantes.</dd></div>
+      <div><dt>Consenso</dt><dd>Reglas con las que una red acuerda qué registros son válidos sin depender de una sola autoridad.</dd></div>
+      <div><dt>Prueba de Trabajo (PoW)</dt><dd>Mecanismo en el que participantes compiten usando capacidad de cómputo para proponer bloques.</dd></div>
+      <div><dt>Prueba de Participación (PoS)</dt><dd>Mecanismo que selecciona validadores que comprometen activos como garantía para participar.</dd></div>
+      <div><dt>TWh</dt><dd>Teravatio-hora: unidad de energía equivalente a mil millones de kilovatios-hora.</dd></div>
+      <div><dt>SCI</dt><dd>Intensidad de carbono del software: emisiones de CO₂ equivalente por una unidad de valor, como una transacción.</dd></div>
+    </dl>
+  </div>
+</section>
+
 <!-- ===================== NOTICIA DE IMPACTO: PROYECTO ===================== -->
 <section class="band light" id="proyecto">
   <div class="wrap">
@@ -701,7 +781,7 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
         <tr><th>Problema</th><td>Elegir el mecanismo de consenso cambia el consumo de una blockchain en varios órdenes de magnitud, y casi nunca se mide al diseñar. Tres cifras: Bitcoin consume 138–204 TWh al año; eso es entre el 0,4 % y el 0,7 % de la electricidad mundial (CBECI y Digiconomist, 2026); y Ethereum redujo su consumo 99,95 % tras The Merge (ethereum.org, 2026).</td></tr>
         <tr><th>Decisión técnica</th><td>Qué mecanismo de consenso usar (Prueba de Trabajo o de Participación) o si una base de datos tradicional basta. Se registra como requisito no funcional y se compara con el indicador SCI.</td></tr>
         <tr><th>Usuario</th><td>Un analista de requisitos o arquitecto de un equipo de software, por ejemplo de una cooperativa cafetera o de la universidad en el Huila, con un computador normal y conexión básica a internet. Funciona en el navegador, sin instalar nada.</td></tr>
-        <tr><th>Solución y prototipo</th><td><b>Qué construimos:</b> una calculadora web que estima el SCI por transacción de tres alternativas. <b>Qué funciona en la demostración:</b> cálculo en vivo, comparación visual, veredicto frente a la meta y escenarios de ejemplo. <b>Qué falta:</b> datos medidos por red, carga automática del factor de emisión oficial de Colombia y exportar el reporte.</td></tr>
+        <tr><th>Solución y prototipo</th><td><b>Qué construimos:</b> una calculadora web que estima el SCI por transacción de tres alternativas. <b>Qué funciona en la demostración:</b> cálculo en vivo, comparación visual, veredicto frente a la meta, escenarios de ejemplo y exportación del reporte en PDF. <b>Qué falta:</b> datos medidos por red y carga automática del factor de emisión oficial de Colombia.</td></tr>
         <tr><th>Métrica</th><td>Indicador SCI (gCO₂eq por transacción). Línea base: la opción de Prueba de Trabajo. Meta: reducir al menos 99 % frente a esa línea base.</td></tr>
         <tr><th>Riesgo principal</th><td>Que los datos de entrada sean estimaciones y den una falsa sensación de precisión. Qué haríamos: mostrar todos los supuestos, permitir editarlos, reemplazarlos por valores medidos o fuentes oficiales y presentar los resultados como órdenes de magnitud.</td></tr>
       </tbody>
@@ -712,24 +792,34 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
     <div class="calc reveal" id="calc">
       <div class="calc-in">
         <h3>Calculadora de huella del consenso</h3>
-        <p class="formula">SCI = ((E × I) + M) / R</p>
+        <p class="formula">SCI = ((E × R × I) + M) / R</p>
+        <details class="calc-help">
+          <summary>¿Qué significa cada variable?</summary>
+          <dl>
+            <dt>E · Energía</dt><dd>Kilovatios-hora consumidos por transacción. Se multiplica por R para obtener la energía anual.</dd>
+            <dt>I · Intensidad de carbono</dt><dd>Gramos de CO₂ equivalente emitidos por cada kilovatio-hora de electricidad.</dd>
+            <dt>M · Emisiones incorporadas</dt><dd>Gramos de CO₂ equivalente anuales atribuidos al hardware utilizado.</dd>
+            <dt>R · Unidad de valor</dt><dd>Número entero de transacciones al año; debe ser mayor que cero.</dd>
+          </dl>
+        </details>
         <div class="presets" role="group" aria-label="Escenarios de ejemplo">
           <button type="button" data-r="50000">Trazabilidad de café (50.000)</button>
           <button type="button" data-r="20000">Certificados académicos (20.000)</button>
           <button type="button" data-r="8000">Votación estudiantil (8.000)</button>
         </div>
         <div class="fields">
-          <label for="c-r">Transacciones por año (R)<input id="c-r" type="number" min="1" step="1" value="50000"></label>
-          <label for="c-i">Intensidad de carbono de la red (I, gCO₂eq/kWh)<input id="c-i" type="number" min="0" step="1" value="200"></label>
+          <label for="c-r">Transacciones por año (R)<input id="c-r" type="number" min="1" step="1" required value="50000"></label>
+          <label for="c-i">Intensidad de carbono de la red (I, gCO₂eq/kWh)<input id="c-i" type="number" min="0" step="any" required value="200"></label>
         </div>
         <table class="opts">
           <thead><tr><th>Opción</th><th>E: kWh por transacción</th><th>M: gCO₂eq por año</th></tr></thead>
           <tbody>
-            <tr><td>Prueba de Trabajo</td><td><input id="c-e-pow" type="number" min="0" step="any" value="700" aria-label="Energía por transacción en Prueba de Trabajo"></td><td><input id="c-m-pow" type="number" min="0" step="any" value="50000" aria-label="Emisiones incorporadas en Prueba de Trabajo"></td></tr>
-            <tr><td>Prueba de Participación</td><td><input id="c-e-pos" type="number" min="0" step="any" value="0.35" aria-label="Energía por transacción en Prueba de Participación"></td><td><input id="c-m-pos" type="number" min="0" step="any" value="50000" aria-label="Emisiones incorporadas en Prueba de Participación"></td></tr>
-            <tr><td>Base de datos tradicional</td><td><input id="c-e-db" type="number" min="0" step="any" value="0.001" aria-label="Energía por transacción en base de datos"></td><td><input id="c-m-db" type="number" min="0" step="any" value="50000" aria-label="Emisiones incorporadas en base de datos"></td></tr>
+            <tr><td>Prueba de Trabajo</td><td data-label="E: kWh por transacción"><input id="c-e-pow" type="number" min="0" step="any" value="700" aria-label="Energía por transacción en Prueba de Trabajo"></td><td data-label="M: gCO₂eq por año"><input id="c-m-pow" type="number" min="0" step="any" value="50000" aria-label="Emisiones incorporadas en Prueba de Trabajo"></td></tr>
+            <tr><td>Prueba de Participación</td><td data-label="E: kWh por transacción"><input id="c-e-pos" type="number" min="0" step="any" value="0.35" aria-label="Energía por transacción en Prueba de Participación"></td><td data-label="M: gCO₂eq por año"><input id="c-m-pos" type="number" min="0" step="any" value="50000" aria-label="Emisiones incorporadas en Prueba de Participación"></td></tr>
+            <tr><td>Base de datos tradicional</td><td data-label="E: kWh por transacción"><input id="c-e-db" type="number" min="0" step="any" value="0.001" aria-label="Energía por transacción en base de datos"></td><td data-label="M: gCO₂eq por año"><input id="c-m-db" type="number" min="0" step="any" value="50000" aria-label="Emisiones incorporadas en base de datos"></td></tr>
           </tbody>
         </table>
+        <p class="calc-error" id="calc-error" role="status" hidden></p>
         <button type="button" class="mini" id="c-merge">Aplicar a Participación la reducción del Merge (−99,95 %)</button>
         <p class="calc-note">Los valores iniciales son supuestos ilustrativos del equipo: I = 200 es un valor de ejemplo y la energía por transacción solo fija un orden de magnitud. Antes de sacar conclusiones, reemplácelos por datos medidos y por el factor de emisión oficial de Colombia (UPME/XM). E: energía por transacción, I: intensidad de carbono, M: emisiones incorporadas del hardware, R: unidad de valor (transacciones).</p>
       </div>
@@ -751,6 +841,7 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
         </div>
         <p class="reading" id="reading"></p>
         <p class="src" style="margin:10px 0 0;color:var(--on-dark-soft)">Meta del proyecto: reducir al menos 99 % frente a la línea base. Barras en escala logarítmica.</p>
+        <div class="export-actions"><button type="button" class="btn" id="export-calc">Guardar resultados en PDF</button><p class="src">En el diálogo de impresión, selecciona «Guardar como PDF».</p></div>
       </div>
     </div>
   </div>
@@ -786,17 +877,18 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
     <div class="sources" id="fuentes">
       <h3>Fuentes</h3>
       <ol>
-        <li><b>Cambridge Bitcoin Electricity Consumption Index (CBECI)</b>, Cambridge Centre for Alternative Finance: consumo estimado de Bitcoin, 2026.</li>
-        <li><b>Digiconomist</b>, Bitcoin Energy Consumption Index: estimación alternativa de consumo, 2026.</li>
-        <li><b>ethereum.org</b>, «La Fusión» (The Merge): reducción cercana al 99,95 % en el consumo de Ethereum, 2026.</li>
-        <li><b>Cambridge Centre for Alternative Finance</b>: estimación del consumo de Ethereum antes y después de The Merge.</li>
-        <li><b>DIAN</b>, Resolución 000240 de diciembre de 2025: marco de reporte de criptoactivos (OCDE/CARF).</li>
-        <li><b>Enel Colombia / ANLA</b>: capacidad instalada de El Quimbo (400 MW) y Betania (540,9 MW), Huila.</li>
-        <li><b>ISO/IEC 21031:2024</b>, Software Carbon Intensity (SCI): metodología para cuantificar emisiones de carbono del software.</li>
-        <li><b>Green Software Foundation</b>, Software Carbon Intensity (SCI) Specification: greensoftware.foundation/standards/sci</li>
-        <li><b>XM</b> (2026): reporte de generación eléctrica de Colombia; en julio de 2026, 75,42 % de la generación fue renovable.</li>
-        <li><b>CoinDesk</b> (2026): uso de excedentes de energía renovable para minería de Bitcoin en Colombia y caso de Paraguay con la energía de Itaipú.</li>
+        <li><a href="https://ccaf.io/cbeci/index"><b>Cambridge Bitcoin Electricity Consumption Index (CBECI)</b></a>: estimaciones de consumo eléctrico de Bitcoin.</li>
+        <li><a href="https://digiconomist.net/bitcoin-energy-consumption/"><b>Digiconomist</b>, Bitcoin Energy Consumption Index</a>: estimación alternativa de consumo.</li>
+        <li><a href="https://ethereum.org/energy-consumption/"><b>ethereum.org</b>, consumo energético de Ethereum</a>: estimaciones y efecto de The Merge.</li>
+        <li><a href="https://ccaf.io/cbnsi/ethereum/methodology"><b>Cambridge Centre for Alternative Finance</b>, metodología para Ethereum</a>: estimación del consumo actual de la red.</li>
+        <li><a href="https://www.dian.gov.co/normatividad/Normatividad/Resoluci%C3%B3n%20000240%20de%2024-12-2025.pdf"><b>DIAN</b>, Resolución 000240 de 2025</a>: marco de reporte de criptoactivos.</li>
+        <li>Enel Colombia: capacidad instalada de <a href="https://www.enel.com.co/es/conoce-enel/enel-generacion/el-quimbo/obras-represa-el-quimbo.html">El Quimbo</a> y <a href="https://www.enel.com.co/es/historias/a202304-guia-flora-arborea-hidroelectrica-betania.html">Betania</a>.</li>
+        <li><a href="https://www.iso.org/standard/86612.html"><b>ISO/IEC 21031:2024</b></a>: especificación Software Carbon Intensity.</li>
+        <li><a href="https://sci.greensoftware.foundation/"><b>Green Software Foundation</b>, especificación SCI</a>.</li>
+        <li><a href="https://www.xm.com.co/noticias/9372-en-julio-los-embalses-de-energia-del-pais-cerraron-en-un-7999"><b>XM</b>, reporte de generación de julio de 2026</a>.</li>
+        <li><a href="https://www.coindesk.com/es/tech/2026/05/06/colombia-wants-to-mine-bitcoin-with-surplus-renewable-energy"><b>CoinDesk</b>, minería y excedentes renovables en Colombia y Paraguay</a>.</li>
       </ol>
+      <p class="src">Las estimaciones varían según la fecha y la metodología. La cifra actual de ethereum.org difiere de los 0,0079 TWh citados en esta edición; el índice de Cambridge no incluye el consumo total de Ethereum anterior a The Merge. Las cifras históricas deben verificarse antes de reutilizarlas.</p>
     </div>
 
     <div class="url-box print-only">Parte interactiva de esta edición (calculadora, simulador y gráfico con escala): <a id="live-url" href="https://santiagoestteban.github.io/PeriodicoEcologico/">https://santiagoestteban.github.io/PeriodicoEcologico/</a></div>
@@ -806,6 +898,19 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
       <a class="btn" href="Consenso-Verde.pdf" download="Consenso-Verde.pdf">Descargar página en PDF</a>
     </div>
   </div>
+</section>
+
+<section class="calc-report" id="calc-report" aria-label="Reporte de la calculadora">
+  <h1>Calculadora Consenso Verde</h1>
+  <p>Reporte de estimaciones ilustrativas de intensidad de carbono.</p>
+  <h2>Datos ingresados</h2>
+  <p id="report-inputs"></p>
+  <table>
+    <thead><tr><th>Opción</th><th>E (kWh/transacción)</th><th>M (gCO₂eq/año)</th><th>SCI (gCO₂eq/transacción)</th><th>Total (tCO₂eq/año)</th><th>Comparación</th></tr></thead>
+    <tbody id="report-results"></tbody>
+  </table>
+  <p id="report-summary"></p>
+  <p>SCI = ((E × R × I) + M) / R. Meta: reducir al menos 99 % frente a Prueba de Trabajo. Sustituye los supuestos por datos medidos y el factor oficial de emisión antes de sacar conclusiones.</p>
 </section>
 
 <script>
@@ -831,10 +936,71 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
     catch(e) { console.warn('No se pudo guardar la preferencia de apariencia.', e); }
   });
 
+  var textSize = $('text-size'), savedSize = null;
+  try { savedSize = localStorage.getItem('consenso-verde-text-size'); }
+  catch(e) { console.warn('No se pudo leer el tamaño de texto.', e); }
+  if(['normal','large','larger'].indexOf(savedSize) !== -1) textSize.value = savedSize;
+  function applyTextSize(){ document.documentElement.dataset.textSize = textSize.value; }
+  applyTextSize();
+  textSize.addEventListener('change', function(){
+    applyTextSize();
+    try { localStorage.setItem('consenso-verde-text-size', textSize.value); }
+    catch(e) { console.warn('No se pudo guardar el tamaño de texto.', e); }
+  });
+
   /* ---- barra de progreso y seccion activa ---- */
   var prog = $('progress'), nav = document.querySelector('.topbar nav'), sectionSelect = $('section-select');
   var navLinks = Array.from(nav.querySelectorAll('a'));
   var sections = navLinks.map(function(link){ return $(link.getAttribute('href').slice(1)); });
+  var shareSection = $('share-section'), shareLink = $('share-link'), shareStatus = $('share-status');
+  shareSection.innerHTML = sectionSelect.innerHTML;
+  function updateShareLink(){
+    var local = location.protocol === 'file:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+    var url = local ? $('live-url').href : location.href;
+    var target = new URL(url); target.hash = shareSection.value; shareLink.value = target.href;
+    shareStatus.textContent = '';
+  }
+  shareSection.addEventListener('change', updateShareLink);
+  $('share-copy').addEventListener('click', function(){
+    if(!navigator.clipboard || !navigator.clipboard.writeText){
+      shareLink.select(); shareStatus.textContent = 'Selecciona y copia el enlace.';
+      return;
+    }
+    navigator.clipboard.writeText(shareLink.value).then(function(){
+      shareStatus.textContent = 'Enlace copiado.';
+    }, function(error){
+      console.warn('No se pudo copiar el enlace.', error);
+      shareLink.select(); shareStatus.textContent = 'No se pudo copiar automáticamente. Selecciona y copia el enlace.';
+    });
+  });
+  updateShareLink();
+  var words = Array.from(document.querySelectorAll('section:not(.calc-report) p, section:not(.calc-report) li, section:not(.calc-report) td, section:not(.calc-report) dd'))
+    .map(function(el){ return el.textContent.trim(); }).join(' ').split(/\s+/).filter(Boolean).length;
+  $('reading-time').textContent = 'Lectura aproximada: ' + Math.max(1, Math.ceil(words/200)) + ' min';
+  var sourcePattern = /Cambridge Bitcoin Electricity Consumption Index \(CBECI\)|Cambridge Centre for Alternative Finance|Enel Colombia \/ ANLA|Green Software Foundation|ethereum\.org|Digiconomist|CBECI|CoinDesk|DIAN(?:, Resolución 000240 de 2025)?|ISO\/IEC 21031:2024|XM/g;
+  function sourceURL(name){
+    if(name.indexOf('Cambridge Bitcoin') === 0 || name === 'CBECI') return 'https://ccaf.io/cbeci/index';
+    if(name.indexOf('Cambridge Centre') === 0) return 'https://ccaf.io/cbnsi/ethereum/methodology';
+    if(name === 'Digiconomist') return 'https://digiconomist.net/bitcoin-energy-consumption/';
+    if(name === 'ethereum.org') return 'https://ethereum.org/energy-consumption/';
+    if(name.indexOf('DIAN') === 0) return 'https://www.dian.gov.co/normatividad/Normatividad/Resoluci%C3%B3n%20000240%20de%2024-12-2025.pdf';
+    if(name === 'Green Software Foundation') return 'https://sci.greensoftware.foundation/';
+    if(name === 'ISO/IEC 21031:2024') return 'https://www.iso.org/standard/86612.html';
+    if(name === 'XM') return 'https://www.xm.com.co/noticias/9372-en-julio-los-embalses-de-energia-del-pais-cerraron-en-un-7999';
+    if(name === 'CoinDesk') return 'https://www.coindesk.com/es/tech/2026/05/06/colombia-wants-to-mine-bitcoin-with-surplus-renewable-energy';
+    return '#fuentes';
+  }
+  document.querySelectorAll('.fig-src, p.src, table.log td.s, #duelo .note').forEach(function(source){
+    if(source.matches('p.src') && !/^Fuente/i.test(source.textContent.trim())) return;
+    var text = source.textContent, match, previous = 0, fragment = document.createDocumentFragment();
+    sourcePattern.lastIndex = 0;
+    while((match = sourcePattern.exec(text))){
+      fragment.appendChild(document.createTextNode(text.slice(previous,match.index)));
+      var link = document.createElement('a'); link.href = sourceURL(match[0]); link.textContent = match[0]; fragment.appendChild(link);
+      previous = sourcePattern.lastIndex;
+    }
+    if(previous){ fragment.appendChild(document.createTextNode(text.slice(previous))); source.textContent = ''; source.appendChild(fragment); }
+  });
   var activeSection = '';
   sectionSelect.addEventListener('change', function(){ location.hash = sectionSelect.value; });
   document.documentElement.classList.add('nav-ready');
@@ -968,6 +1134,12 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
     }
     $('sc-lin').addEventListener('click', function(){ setMode('lin'); });
     $('sc-log').addEventListener('click', function(){ setMode('log'); });
+    bars.querySelectorAll('.bar-row').forEach(function(button){
+      button.addEventListener('click', function(){
+        var detail = $(button.getAttribute('aria-controls')), open = button.getAttribute('aria-expanded') === 'true';
+        button.setAttribute('aria-expanded', !open); detail.hidden = open;
+      });
+    });
     draw();
     new IntersectionObserver(function(es,o){
       if(es[0].isIntersecting){
@@ -1009,13 +1181,33 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
   });
 
   /* ---- calculadora SCI ---- */
-  var keys = ['pow','pos','db'];
+  var keys = ['pow','pos','db'], inputIds = ['c-r','c-i','c-e-pow','c-e-pos','c-e-db','c-m-pow','c-m-pos','c-m-db'];
+  var calcError = $('calc-error'), calcOut = document.querySelector('.calc-out'), exportCalc = $('export-calc');
   function calc(){
-    var R = Math.max(1, +$('c-r').value || 1), I = Math.max(0, +$('c-i').value || 0), res = {}, vals = [];
-    keys.forEach(function(k){
-      var e = Math.max(0, +$('c-e-'+k).value || 0), m = Math.max(0, +$('c-m-'+k).value || 0);
-      var sci = (e*R*I + m)/R; res[k] = {sci:sci, tot:sci*R/1e6}; vals.push(Math.max(sci,1e-3));
+    var invalid = inputIds.filter(function(id){
+      var el = $(id), value = el.valueAsNumber;
+      var bad = el.value === '' || !Number.isFinite(value) || value < (id === 'c-r' ? 1 : 0) || (id === 'c-r' && !Number.isSafeInteger(value));
+      el.setAttribute('aria-invalid', bad);
+      if(bad) el.setAttribute('aria-describedby', 'calc-error'); else el.removeAttribute('aria-describedby');
+      return bad;
     });
+    var R = $('c-r').valueAsNumber, I = $('c-i').valueAsNumber, res = {}, vals = [];
+    if(!invalid.length){
+      keys.forEach(function(k){
+        var e = $('c-e-'+k).valueAsNumber, m = $('c-m-'+k).valueAsNumber;
+        var sci = e*I + m/R, total = sci*(R/1e6);
+        res[k] = {sci:sci, tot:total};
+        vals.push(Math.max(sci,1e-3));
+      });
+    }
+    var overflow = !invalid.length && keys.some(function(k){ return !Number.isFinite(res[k].sci) || !Number.isFinite(res[k].tot); });
+    if(invalid.length || overflow){
+      calcError.hidden = false;
+      calcError.textContent = overflow ? 'Los valores son demasiado grandes para calcular el resultado. Introduce valores menores.' : 'Revisa los campos señalados: introduce números válidos no negativos y una cantidad entera de transacciones mayor que cero.';
+      calcOut.classList.add('is-invalid'); exportCalc.disabled = true;
+      return false;
+    }
+    calcError.hidden = true; calcError.textContent = ''; calcOut.classList.remove('is-invalid'); exportCalc.disabled = false;
     var lo = Math.log10(Math.min.apply(null,vals)) - .6, hi = Math.log10(Math.max.apply(null,vals)) + .05, base = res.pow.sci;
     keys.forEach(function(k){
       var row = $('res-'+k), r = res[k], red = base>0 ? (1-r.sci/base)*100 : 0;
@@ -1023,16 +1215,35 @@ input[type=number]{font:500 1rem var(--ui);padding:10px 12px;border:2px solid va
       row.querySelector('.tot').textContent = fmt(r.tot);
       row.querySelector('.fl').style.width = Math.max(3, Math.min(100,(Math.log10(Math.max(r.sci,1e-3))-lo)/(hi-lo)*100)) + '%';
       if(k!=='pow'){
-        row.querySelector('.red').textContent = nf(Math.max(red,0), red>=99.99 ? 3 : 2);
+        row.querySelector('.red').textContent = base>0 && Number.isFinite(red) ? nf(red, red>=99.99 ? 3 : 2) : '—';
         var p = row.querySelector('.verdict-pill'), ok = red>=99;
-        p.textContent = ok ? 'Cumple la meta' : 'No cumple la meta'; p.className = 'pill verdict-pill ' + (ok?'ok':'no');
+        p.textContent = base>0 ? (ok ? 'Cumple la meta' : 'No cumple la meta') : 'Sin línea base';
+        p.className = 'pill verdict-pill ' + (base>0 ? (ok?'ok':'no') : 'base');
       }
     });
     $('reading').textContent = 'Con ' + nf(R,0) + ' transacciones al año, la opción de Prueba de Trabajo emitiría ' + fmt(res.pow.tot) + ' tCO₂eq, frente a ' + fmt(res.pos.tot) + ' de Prueba de Participación y ' + fmt(res.db.tot) + ' de una base de datos tradicional.';
+    return true;
   }
-  ['c-r','c-i','c-e-pow','c-e-pos','c-e-db','c-m-pow','c-m-pos','c-m-db'].forEach(function(id){ $(id).addEventListener('input', calc); });
+  inputIds.forEach(function(id){ $(id).addEventListener('input', calc); });
   document.querySelectorAll('.presets button').forEach(function(b){ b.addEventListener('click', function(){ $('c-r').value = b.dataset.r; calc(); }); });
-  $('c-merge').addEventListener('click', function(){ $('c-e-pos').value = +((+$('c-e-pow').value||0)*0.0005).toPrecision(4); calc(); });
+  $('c-merge').addEventListener('click', function(){ if(calc()){ $('c-e-pos').value = +($('c-e-pow').valueAsNumber*0.0005).toPrecision(4); calc(); } });
+  exportCalc.addEventListener('click', function(){
+    if(!calc()) return;
+    $('report-inputs').textContent = 'Transacciones al año (R): ' + nf($('c-r').valueAsNumber,0) + ' · Intensidad de carbono (I): ' + fmt($('c-i').valueAsNumber) + ' gCO₂eq/kWh.';
+    var tbody = $('report-results'); tbody.textContent = '';
+    keys.forEach(function(k){
+      var result = $('res-'+k), row = document.createElement('tr');
+      var reduction = k === 'pow' ? '' : result.querySelector('.red').textContent;
+      var comparison = k === 'pow' ? 'Línea base' : result.querySelector('.verdict-pill').textContent + (reduction === '—' ? '' : ' (' + reduction + ' %)');
+      var values = [result.querySelector('.res-top b').textContent, fmt($('c-e-'+k).valueAsNumber), fmt($('c-m-'+k).valueAsNumber), result.querySelector('.sci').textContent, result.querySelector('.tot').textContent, comparison];
+      values.forEach(function(value){ var cell = document.createElement('td'); cell.textContent = value; row.appendChild(cell); });
+      tbody.appendChild(row);
+    });
+    $('report-summary').textContent = $('reading').textContent;
+    document.body.classList.add('printing-report');
+    window.print();
+  });
+  addEventListener('afterprint', function(){ document.body.classList.remove('printing-report'); });
   calc();
 })();
 </script>
